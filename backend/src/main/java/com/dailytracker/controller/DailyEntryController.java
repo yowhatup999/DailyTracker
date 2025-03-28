@@ -37,4 +37,15 @@ public class DailyEntryController {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DailyEntry> updateEntry(@PathVariable Long id, @RequestBody DailyEntry updatedEntry) {
+        return service.updateEntry(id, updatedEntry)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 }
+
+
