@@ -25,4 +25,5 @@ public class SupplementEntry {
     @ManyToOne
     @JoinColumn(name = "daily_entry_id")
     private DailyEntry dailyEntry;
+
 }

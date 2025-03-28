@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
@@ -26,4 +28,8 @@ public class DailyEntry {
     private Double wetterTemp;
     private Double wetterLuftdruck;
     private String mondphase;
+
+    @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL)
+    private List<SupplementEntry> supplements;
+
 }
