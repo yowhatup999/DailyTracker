@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 @Data
@@ -16,6 +18,7 @@ public class DailyEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate datum;
     private Integer schritte;
     private Integer schlafStunden;
