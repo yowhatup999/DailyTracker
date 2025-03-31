@@ -1,9 +1,11 @@
 package com.dailytracker.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,7 +31,9 @@ public class DailyEntry {
     private Double wetterLuftdruck;
     private String mondphase;
 
-    @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL)
-    private List<SupplementEntry> supplements;
+    @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<SupplementEntry> supplements = new ArrayList<>();
+
 
 }

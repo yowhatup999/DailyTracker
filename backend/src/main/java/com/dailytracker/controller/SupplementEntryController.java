@@ -6,6 +6,7 @@ import com.dailytracker.service.SupplementEntryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class SupplementEntryController {
     }
 
     @PostMapping("/{dailyEntryId}")
-    public SupplementEntry createForDay(@PathVariable Long dailyEntryId, @RequestBody SupplementEntry supplement) {
+    public SupplementEntry createForDay(@PathVariable Long dailyEntryId, @RequestBody @Valid SupplementEntry supplement) {
         DailyEntry daily = dailyEntryRepository.findById(dailyEntryId)
                 .orElseThrow(() -> new RuntimeException("DailyEntry not found"));
 
@@ -45,24 +46,17 @@ public class SupplementEntryController {
         return supplementEntryRepository.save(supplement);
     }
 
-
-    @PutMapping("/{id}")
-    public ResponseEntity<SupplementEntry> update(@PathVariable Long id, @RequestBody SupplementEntry updated) {
-        return service.findById(id)
-                .map(existing -> {
-                    existing.setName(updated.getName());
-                    existing.setMengeMg(updated.getMengeMg());
-                    existing.setGenommen(updated.isGenommen());
-                    existing.setDatum(updated.getDatum());
-                    existing.setDailyEntry(updated.getDailyEntry());
-                    return ResponseEntity.ok(service.save(existing));
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SupplementEntry> updateSupplement(@PathVariable Long id, @RequestBody @Valid SupplementEntry entry) {
+        return service.updateSupplement(id, entry)
+                .map(updated -> ResponseEntity.ok(updated))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

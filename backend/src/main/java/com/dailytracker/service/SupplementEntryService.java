@@ -33,4 +33,16 @@ public class SupplementEntryService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    public Optional<SupplementEntry> updateSupplement(Long id, SupplementEntry updatedEntry) {
+        return repository.findById(id)
+                .map(existing -> {
+                    existing.setName(updatedEntry.getName());
+                    existing.setMengeMg(updatedEntry.getMengeMg());
+                    existing.setGenommen(updatedEntry.isGenommen());
+                    existing.setDatum(updatedEntry.getDatum());
+                    return repository.save(existing);
+                });
+    }
+
 }
