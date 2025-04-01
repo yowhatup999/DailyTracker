@@ -34,9 +34,9 @@ public class SupplementEntry {
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate datum;
 
-    @NotNull(message = "DailyEntry darf nicht null sein")
     @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "daily_entry_id", nullable = false)
+    @JsonBackReference(value = "supplement-daily")
     private DailyEntry dailyEntry;
 
 }

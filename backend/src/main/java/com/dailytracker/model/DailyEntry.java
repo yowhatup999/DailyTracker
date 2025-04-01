@@ -32,11 +32,12 @@ public class DailyEntry {
     private String mondphase;
 
     @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "supplement-daily")
     private List<SupplementEntry> supplements = new ArrayList<>();
 
     @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "custom-daily")
     private List<CustomEntry> customEntries = new ArrayList<>();
+
 
 }

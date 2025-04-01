@@ -2,6 +2,7 @@ package com.dailytracker.controller;
 
 import com.dailytracker.model.DailyEntry;
 import com.dailytracker.service.DailyEntryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,8 @@ public class DailyEntryController {
     }
 
     @PostMapping
-    public DailyEntry create(@RequestBody DailyEntry entry) {
-        return service.save(entry);
+    public DailyEntry create(@RequestBody @Valid DailyEntry entry) {
+        return service.createWithCustomEntries(entry);  // ✅ hier war der Fehler!
     }
 
     @DeleteMapping("/{id}")
@@ -44,8 +45,4 @@ public class DailyEntryController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-
 }
-
-

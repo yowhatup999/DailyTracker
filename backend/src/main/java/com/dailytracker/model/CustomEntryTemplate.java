@@ -1,6 +1,5 @@
 package com.dailytracker.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class CustomEntry {
+public class CustomEntryTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +15,7 @@ public class CustomEntry {
 
     private String name;
 
-    private String value;
-
     private String unit;
 
-    @ManyToOne
-    @JoinColumn(name = "daily_entry_id", nullable = false)
-    @JsonBackReference(value = "custom-daily")
-    private DailyEntry dailyEntry;
-
+    private boolean enabled;
 }
