@@ -35,5 +35,8 @@ public class DailyEntry {
     @JsonManagedReference
     private List<SupplementEntry> supplements = new ArrayList<>();
 
+    @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<CustomEntry> customEntries = new ArrayList<>();
 
 }
