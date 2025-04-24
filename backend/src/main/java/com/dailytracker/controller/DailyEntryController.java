@@ -4,9 +4,11 @@ import com.dailytracker.model.DailyEntry;
 import com.dailytracker.service.DailyEntryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,8 +19,8 @@ public class DailyEntryController {
     private final DailyEntryService service;
 
     @GetMapping
-    public List<DailyEntry> getAll() {
-        return service.findAll();
+    public ResponseEntity<List<DailyEntry>> getAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
@@ -28,9 +30,25 @@ public class DailyEntryController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/by-date")
+    public ResponseEntity<List<DailyEntry>> getByDate(@RequestParam("datum") @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate datum) {
+        return ResponseEntity.ok(service.findByDatum(datum));
+    }
+
+    @GetMapping("/by-month")
+    public ResponseEntity<List<DailyEntry>> getByMonthAndYear(@RequestParam("monat") int monat, @RequestParam("jahr") int jahr) {
+        return ResponseEntity.ok(service.findByMonatUndJahr(monat, jahr));
+    }
+
+    @GetMapping("/by-year")
+    public ResponseEntity<List<DailyEntry>> getByYear(@RequestParam("jahr") int jahr) {
+        return ResponseEntity.ok(service.findByJahr(jahr));
+    }
+
     @PostMapping
-    public DailyEntry create(@RequestBody @Valid DailyEntry entry) {
-        return service.createWithCustomEntries(entry);  // ✅ hier war der Fehler!
+    public ResponseEntity<DailyEntry> create(@RequestBody @Valid DailyEntry entry) {
+        DailyEntry saved = service.createWithCustomEntries(entry);
+        return ResponseEntity.ok(saved);
     }
 
     @DeleteMapping("/{id}")

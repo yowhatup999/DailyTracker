@@ -3,8 +3,10 @@ package com.dailytracker.service;
 import com.dailytracker.model.*;
 import com.dailytracker.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,7 @@ public class DailyEntryService {
     private final DailyEntryRepository dailyEntryRepository;
     private final CustomEntryTemplateRepository customEntryTemplateRepository;
     private final SupplementDefinitionRepository supplementDefinitionRepository;
+    private final UserRepository userRepository;
 
     public List<DailyEntry> findAll() {
         return dailyEntryRepository.findAll();
@@ -43,7 +46,11 @@ public class DailyEntryService {
     }
 
     public DailyEntry createWithCustomEntries(DailyEntry entry) {
-        // Custom Entries
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        entry.setUser(user);
+
         List<CustomEntryTemplate> templates = customEntryTemplateRepository.findAll();
         List<CustomEntry> customEntries = new ArrayList<>();
         for (CustomEntryTemplate t : templates) {
@@ -58,7 +65,6 @@ public class DailyEntryService {
         }
         entry.setCustomEntries(customEntries);
 
-        // Supplements
         List<SupplementDefinition> defs = supplementDefinitionRepository.findAll();
         List<SupplementEntry> supplementEntries = new ArrayList<>();
         for (SupplementDefinition def : defs) {
@@ -75,5 +81,17 @@ public class DailyEntryService {
         entry.setSupplements(supplementEntries);
 
         return dailyEntryRepository.save(entry);
+    }
+
+    public List<DailyEntry> findByDatum(LocalDate datum) {
+        return dailyEntryRepository.findByDatum(datum);
+    }
+
+    public List<DailyEntry> findByMonatUndJahr(int monat, int jahr) {
+        return dailyEntryRepository.findByMonatUndJahr(monat, jahr);
+    }
+
+    public List<DailyEntry> findByJahr(int jahr) {
+        return dailyEntryRepository.findByJahr(jahr);
     }
 }

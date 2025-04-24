@@ -31,6 +31,10 @@ public class DailyEntry {
     private Double wetterLuftdruck;
     private String mondphase;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "supplement-daily")
     private List<SupplementEntry> supplements = new ArrayList<>();
@@ -38,6 +42,5 @@ public class DailyEntry {
     @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "custom-daily")
     private List<CustomEntry> customEntries = new ArrayList<>();
-
 
 }
