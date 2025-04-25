@@ -1,32 +1,22 @@
 import { createContext, useContext, useReducer } from "react";
 
-// 1. Initialer Zustand
+const UserContext = createContext();
+
 const initialState = {
-    user: null,
-    token: null,
-    isLoggedIn: false,
+    isLoggedIn: true,
 };
 
-// 2. Reducer-Funktion
 function userReducer(state, action) {
     switch (action.type) {
-        case "LOGIN":
-            return {
-                user: action.payload.user,
-                token: action.payload.token,
-                isLoggedIn: true,
-            };
         case "LOGOUT":
-            return initialState;
+            return { isLoggedIn: false };
+        case "LOGIN":
+            return { isLoggedIn: true };
         default:
             return state;
     }
 }
 
-// 3. Context erstellen
-const UserContext = createContext();
-
-// 4. Provider-Komponente
 export function UserProvider({ children }) {
     const [state, dispatch] = useReducer(userReducer, initialState);
 
@@ -37,7 +27,6 @@ export function UserProvider({ children }) {
     );
 }
 
-// 5. Einfacher Zugriff mit useUser()
 export function useUser() {
     return useContext(UserContext);
 }
