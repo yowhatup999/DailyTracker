@@ -1,7 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+
 export default function App() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-            <h1 className="text-4xl font-bold">Tailwind läuft!</h1>
-        </div>
-    );
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<Login />} />
+                <Route path='/dashboard' element={<Dashboard />} />
+            </Routes>
+        </BrowserRouter>
+    )
 }
