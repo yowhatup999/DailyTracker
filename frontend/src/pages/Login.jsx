@@ -11,7 +11,7 @@ export default function Login() {
         e.preventDefault();
         if (email === 'admin@admin' && password === 'admin') {
             alert('Login erfolgreich!');
-            window.location.href = '/dashboard';
+            window.location.href = '/';
         } else {
             alert('Login fehlgeschlagen!');
         }
