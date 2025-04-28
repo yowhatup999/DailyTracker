@@ -4,7 +4,7 @@ import "../styles/output.css";
 
 export default function AnimatedBorder({ children }) {
     return (
-        <div className="relative w-full animate-glow-border rounded-2xl overflow-hidden p-1">
+        <div className="relative w-full animate-glow-border rounded-2xl overflow-hidden p-0.5">
             <div className="glow-inner w-full h-full">
                 {children}
             </div>

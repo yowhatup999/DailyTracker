@@ -6,7 +6,7 @@ body {
     @apply font-sans transition-colors duration-300 bg-brand-light dark:bg-brand-dark text-zinc-900 dark:text-white;
 }
 
-/* Apple-like animated glow */
+/* Apple-like glow */
 @property --gradient-angle {
     syntax: "<angle>";
     initial-value: 0deg;
@@ -14,17 +14,13 @@ body {
 }
 
 @keyframes rotate {
-    0% {
-        --gradient-angle: 0deg;
-    }
-    100% {
-        --gradient-angle: 360deg;
-    }
+    0% { --gradient-angle: 0deg; }
+    100% { --gradient-angle: 360deg; }
 }
 
 .animate-glow-border {
-    --border-width: 4px; /* reite des Apple Intelligence rand */
-    --border-radius: 1.5rem; /* rundung des dashboard elements */
+    --border-width: 4px;
+    --border-radius: 1.5rem;
 
     padding: var(--border-width);
     border-radius: var(--border-radius);
