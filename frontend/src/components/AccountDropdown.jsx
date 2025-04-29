@@ -9,15 +9,15 @@ export default function AccountDropdown() {
     const [open, setOpen] = useState(false);
     const [colorClass, setColorClass] = useState("");
 
-    const initials = "A"; // später dynamisch: Benutzername erster Buchstabe
+    const initials = "A"; // Dummy für jetzt
 
     useEffect(() => {
-        let storedColor = localStorage.getItem("avatarColor");
-        if (!storedColor) {
-            storedColor = colors[Math.floor(Math.random() * colors.length)];
-            localStorage.setItem("avatarColor", storedColor);
+        let stored = localStorage.getItem("avatarColor");
+        if (!stored) {
+            stored = colors[Math.floor(Math.random() * colors.length)];
+            localStorage.setItem("avatarColor", stored);
         }
-        setColorClass(storedColor);
+        setColorClass(stored);
     }, []);
 
     const handleLogout = () => {
@@ -31,16 +31,16 @@ export default function AccountDropdown() {
     };
 
     return (
-        <div className="relative z-50">
+        <div className="relative z-[999]">
             <button
                 onClick={() => setOpen(!open)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${colorClass} text-white font-bold hover:scale-105 transition-transform`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${colorClass} text-white font-bold hover:scale-105 transition`}
             >
                 {initials}
             </button>
 
             {open && (
-                <div className="absolute right-0 mt-2 w-48 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg py-2 z-50">
+                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg py-2 z-[999]">
                     <button
                         onClick={handleProfile}
                         className="w-full text-left px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
