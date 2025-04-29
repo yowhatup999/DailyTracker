@@ -1,12 +1,13 @@
 // src/layouts/SidebarLayout.jsx
 import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Settings, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Settings, Menu, X } from "lucide-react";
+import AccountDropdown from "../components/AccountDropdown";
 
 export default function SidebarLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const navigate = useNavigate();
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "system");
+    const navigate = useNavigate();
 
     useEffect(() => {
         const applyTheme = () => {
@@ -23,7 +24,6 @@ export default function SidebarLayout() {
             }
         };
         applyTheme();
-
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
         const handleSystemChange = () => {
             if (theme === "system") {
@@ -34,14 +34,8 @@ export default function SidebarLayout() {
         return () => mediaQuery.removeEventListener("change", handleSystemChange);
     }, [theme]);
 
-    const handleLogout = () => {
-        navigate("/login");
-    };
-
+    const handleResize = () => setSidebarOpen(window.innerWidth >= 1024);
     useEffect(() => {
-        const handleResize = () => {
-            setSidebarOpen(window.innerWidth >= 1024);
-        };
         handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
@@ -56,7 +50,6 @@ export default function SidebarLayout() {
 
     return (
         <div className="flex w-full min-h-screen bg-brand-light dark:bg-brand-dark text-zinc-900 dark:text-white overflow-hidden">
-            {/* Mobile Button */}
             {!sidebarOpen && (
                 <button
                     onClick={() => setSidebarOpen(true)}
@@ -71,7 +64,6 @@ export default function SidebarLayout() {
                     className="fixed inset-0 bg-black bg-opacity-40 z-40 lg:hidden transition-opacity"
                 />
             )}
-            {/* Sidebar */}
             <aside className={`h-screen w-64 flex flex-col fixed lg:static z-50 lg:z-10 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 shadow-lg lg:shadow-none transition-transform duration-300 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             } lg:translate-x-0`}>
@@ -114,19 +106,13 @@ export default function SidebarLayout() {
                         <span>Einstellungen</span>
                     </NavLink>
                 </nav>
-                <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-100 dark:hover:bg-red-900 transition w-full"
-                    >
-                        <LogOut />
-                        <span>Logout</span>
-                    </button>
-                </div>
             </aside>
 
-            {/* Main Content */}
+            {/* Main */}
             <main className="flex-1 flex flex-col min-h-screen overflow-y-auto p-6 lg:p-10">
+                <div className="flex justify-end mb-6">
+                    <AccountDropdown />
+                </div>
                 <Outlet context={{ theme, setTheme }} />
             </main>
         </div>

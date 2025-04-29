@@ -6,9 +6,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import SidebarLayout from './layouts/SidebarLayout.jsx';
 import Login from './pages/Login.jsx';
-import Signup from './pages/Signup.jsx'; // HINZUGEFÜGT
+import Signup from './pages/Signup.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Settings from './pages/Settings.jsx';
+import Profile from './pages/Profile.jsx'; // NEU
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
                 path: '/settings',
                 element: <Settings />,
             },
+            {
+                path: '/profile', // NEU
+                element: <Profile />,
+            },
         ],
     },
     {
@@ -30,7 +35,7 @@ const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: '/signup', // NEU
+        path: '/signup',
         element: <Signup />,
     },
 ]);
