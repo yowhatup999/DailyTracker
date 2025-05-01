@@ -1,6 +1,7 @@
 package com.dailytracker.controller;
 
 import com.dailytracker.dto.LoginRequest;
+import com.dailytracker.dto.RegisterRequest;
 import com.dailytracker.model.User;
 import com.dailytracker.repository.UserRepository;
 import com.dailytracker.security.JwtService;
@@ -23,12 +24,19 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already in use");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        var user = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .enabled(true)
+                .build();
+
         userRepository.save(user);
+
         return ResponseEntity.ok("Registration successful");
     }
 
@@ -42,4 +50,7 @@ public class AuthController {
         String token = jwtService.generateToken(dbUser);
         return ResponseEntity.ok(token);
     }
+
+
+
 }
