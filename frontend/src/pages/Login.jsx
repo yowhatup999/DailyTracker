@@ -1,20 +1,22 @@
 // src/pages/Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AnimatedBorder from "../components/AnimatedBorder";
+import { loginUser } from "../services/api";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (email === 'admin@admin' && password === 'admin') {
-            setMessage({ text: 'Login erfolgreich!', type: 'success' });
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 1000);
-        } else {
+        try {
+            const token = await loginUser(email, password);
+            localStorage.setItem("dailytracker_token", token);
+            navigate("/dashboard");
+        } catch (error) {
             setMessage({ text: 'Login fehlgeschlagen!', type: 'error' });
         }
     };

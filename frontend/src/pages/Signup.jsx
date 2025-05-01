@@ -1,21 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AnimatedBorder from "../components/AnimatedBorder";
+import { registerUser } from "../services/api";
 
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            setMessage({ text: "Passwörter stimmen nicht überein.", type: "error" });
-        } else {
-            setMessage({ text: "Registrierung erfolgreich! Weiterleitung...", type: "success" });
+        try {
+            await registerUser(email, password);
+            setMessage({ text: "Registrierung erfolgreich!", type: "success" });
+
             setTimeout(() => {
-                window.location.href = "/login";
-            }, 1500);
+                navigate("/login");
+            }, 1000);
+        } catch (error) {
+            setMessage({ text: "Registrierung fehlgeschlagen!", type: "error" });
         }
     };
 
@@ -24,7 +28,7 @@ export default function Signup() {
             <div className="w-full max-w-sm">
                 <AnimatedBorder>
                     <div className="glow-inner p-8 space-y-8 text-center">
-                        <h1 className="text-4xl font-bold tracking-tight">Account erstellen</h1>
+                        <h1 className="text-4xl font-bold tracking-tight">Registrieren</h1>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="text-left space-y-2">
@@ -34,7 +38,7 @@ export default function Signup() {
                                     className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Deine E-Mail"
+                                    placeholder="example@gmail.com"
                                 />
                             </div>
 
@@ -45,18 +49,7 @@ export default function Signup() {
                                     className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="Passwort"
-                                />
-                            </div>
-
-                            <div className="text-left space-y-2">
-                                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Passwort bestätigen</label>
-                                <input
-                                    type="password"
-                                    className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    placeholder="Passwort bestätigen"
+                                    placeholder="********"
                                 />
                             </div>
 
@@ -73,6 +66,13 @@ export default function Signup() {
                                 </div>
                             )}
                         </form>
+
+                        <div className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
+                            Schon registriert?{" "}
+                            <a href="/login" className="text-blue-500 hover:underline font-semibold">
+                                Jetzt einloggen
+                            </a>
+                        </div>
                     </div>
                 </AnimatedBorder>
             </div>
