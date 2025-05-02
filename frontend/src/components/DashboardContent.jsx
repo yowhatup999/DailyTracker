@@ -1,26 +1,80 @@
 // src/components/DashboardContent.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StatCard from "./StatCard";
-
-// Später kommen die Daten per API Call!
-const dummyStats = [
-    { title: "Tägliche Schritte", value: "6.120 / 10.000", description: "Ziel fast erreicht", highlight: "green" },
-    { title: "Wasserzufuhr", value: "1.200 ml", description: "Noch 800 ml bis zum Tagesziel", highlight: "blue" },
-    { title: "Analyse", value: "72%", description: "Aufgaben heute abgeschlossen", highlight: "purple" },
-    { title: "Vitamin D", value: "eingenommen", description: "Supplement heute genommen", highlight: "blue" },
-    { title: "Magnesium", value: "nicht genommen", description: "Noch einnehmen!", highlight: "red" },
-];
+import { getTodayDailyEntry } from "../services/api";
 
 export default function DashboardContent() {
+    const [entry, setEntry] = useState(null);
+
+    useEffect(() => {
+        const fetchEntry = async () => {
+            try {
+                const response = await getTodayDailyEntry();
+                setEntry(response);
+            } catch (error) {
+                console.error("Fehler beim Laden des DailyEntry:", error);
+            }
+        };
+        fetchEntry();
+    }, []);
+
+    if (!entry) return <div className="text-center text-zinc-500">Lade Tagesdaten...</div>;
+
+    const cards = [];
+
+    // Schritte
+    if (entry.schritte !== null) {
+        cards.push({
+            title: "Tägliche Schritte",
+            value: `${entry.schritte} / 10000`,
+            description: "Schrittziel des Tages",
+            highlight: "green",
+        });
+    }
+
+    // Wasser
+    if (entry.wasserMl !== null) {
+        cards.push({
+            title: "Wasserzufuhr",
+            value: `${entry.wasserMl} ml`,
+            description: "Trinkmenge heute",
+            highlight: "blue",
+        });
+    }
+
+    // Supplements
+    if (entry.supplements && entry.supplements.length > 0) {
+        entry.supplements.forEach((supp) => {
+            cards.push({
+                title: supp.name,
+                value: supp.genommen ? "eingenommen" : "nicht genommen",
+                description: `${supp.mengeMg} mg`,
+                highlight: supp.genommen ? "blue" : "red",
+            });
+        });
+    }
+
+    // Custom Entries
+    if (entry.customEntries && entry.customEntries.length > 0) {
+        entry.customEntries.forEach((custom) => {
+            cards.push({
+                title: custom.name,
+                value: `${custom.value} ${custom.unit || ""}`,
+                description: "Benutzerdefinierter Eintrag",
+                highlight: "purple",
+            });
+        });
+    }
+
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
-            {dummyStats.map((stat, index) => (
+            {cards.map((card, index) => (
                 <StatCard
                     key={index}
-                    title={stat.title}
-                    value={stat.value}
-                    description={stat.description}
-                    highlight={stat.highlight}
+                    title={card.title}
+                    value={card.value}
+                    description={card.description}
+                    highlight={card.highlight}
                 />
             ))}
         </div>

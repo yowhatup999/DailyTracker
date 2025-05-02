@@ -33,3 +33,9 @@ export const registerUser = async (email, password) => {
     });
     return response.data;
 };
+
+// GET: Heute’s DailyEntry
+export const getTodayDailyEntry = async () => {
+    const response = await api.get('/daily/today');
+    return response.data;
+};

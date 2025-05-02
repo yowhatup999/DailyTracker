@@ -5,7 +5,8 @@ import AnimatedBorder from "../components/AnimatedBorder";
 import DashboardContent from "../components/DashboardContent";
 
 export default function Dashboard() {
-    useAuth(); // schützt die Route
+    const isReady = useAuth();
+    if (!isReady) return null;
 
     const weatherPlaceholder = "Sonnig, 25°C ☀️";
     const moonPlaceholder = "🌑 Neumond";
@@ -19,7 +20,6 @@ export default function Dashboard() {
                         {weatherPlaceholder} | {moonPlaceholder}
                     </p>
                 </div>
-
                 <DashboardContent />
             </div>
         </AnimatedBorder>
