@@ -45,6 +45,11 @@ public class DailyEntryController {
         return ResponseEntity.ok(service.findByJahr(jahr));
     }
 
+    @GetMapping("/today")
+    public ResponseEntity<DailyEntry> getTodayEntry() {
+        return ResponseEntity.ok(service.getOrCreateTodayForCurrentUser());
+    }
+
     @PostMapping
     public ResponseEntity<DailyEntry> create(@RequestBody @Valid DailyEntry entry) {
         DailyEntry saved = service.createWithCustomEntries(entry);

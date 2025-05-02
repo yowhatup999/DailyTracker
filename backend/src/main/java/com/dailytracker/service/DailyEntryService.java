@@ -83,6 +83,32 @@ public class DailyEntryService {
         return dailyEntryRepository.save(entry);
     }
 
+    public DailyEntry getOrCreateTodayForCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        LocalDate today = LocalDate.now();
+        List<DailyEntry> existing = dailyEntryRepository.findByDatum(today);
+        for (DailyEntry e : existing) {
+            if (e.getUser().getId().equals(user.getId())) {
+                return e;
+            }
+        }
+
+        DailyEntry newEntry = new DailyEntry();
+        newEntry.setDatum(today);
+        newEntry.setUser(user);
+        newEntry.setSchritte(0);
+        newEntry.setWasserMl(0);
+        newEntry.setSchlafStunden(0);
+        newEntry.setWetterTemp(null);
+        newEntry.setWetterLuftdruck(null);
+        newEntry.setMondphase(null);
+
+        return createWithCustomEntries(newEntry);
+    }
+
     public List<DailyEntry> findByDatum(LocalDate datum) {
         return dailyEntryRepository.findByDatum(datum);
     }
