@@ -29,6 +29,7 @@ export default function DashboardContent() {
             value: `${entry.schritte} / 10000`,
             description: "Schrittziel des Tages",
             highlight: "green",
+            onClickData: { type: "steps", entryId: entry.id, value: entry.schritte },
         });
     }
 
@@ -37,8 +38,9 @@ export default function DashboardContent() {
         cards.push({
             title: "Wasserzufuhr",
             value: `${entry.wasserMl} ml`,
-            description: "Trinkmenge heute",
+            description: "Wasser heute",
             highlight: "blue",
+            onClickData: { type: "water", entryId: entry.id, value: entry.wasserMl },
         });
     }
 
@@ -50,6 +52,7 @@ export default function DashboardContent() {
                 value: supp.genommen ? "eingenommen" : "nicht genommen",
                 description: `${supp.mengeMg} mg`,
                 highlight: supp.genommen ? "blue" : "red",
+                onClickData: { type: "supplement", id: supp.id, name: supp.name, genommen: supp.genommen },
             });
         });
     }
@@ -62,6 +65,7 @@ export default function DashboardContent() {
                 value: `${custom.value} ${custom.unit || ""}`,
                 description: "Benutzerdefinierter Eintrag",
                 highlight: "purple",
+                onClickData: { type: "custom", id: custom.id, name: custom.name, value: custom.value, unit: custom.unit },
             });
         });
     }
@@ -75,6 +79,7 @@ export default function DashboardContent() {
                     value={card.value}
                     description={card.description}
                     highlight={card.highlight}
+                    onClickData={card.onClickData}
                 />
             ))}
         </div>

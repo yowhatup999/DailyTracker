@@ -14,7 +14,7 @@ import RootRedirect from './pages/RootRedirect'; // ✅ wichtig
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <RootRedirect />, // 🔁 Weiterleitung je nach Login-Status
+        element: <RootRedirect />,
     },
     {
         path: '/',
