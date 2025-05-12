@@ -57,3 +57,5 @@ export const patchCustomEntry = async (id, data) => {
     const response = await api.patch(`/custom/${id}`, data);
     return response.data;
 };
+
+
