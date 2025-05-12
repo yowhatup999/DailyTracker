@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Settings, Menu, X } from "lucide-react";
 import AccountDropdown from "../components/AccountDropdown";
+import StatModal from "../components/StatModal"; // 🆕 Modal-Import
 
 export default function SidebarLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -62,7 +63,6 @@ export default function SidebarLayout() {
                 />
             )}
 
-            {/* Sidebar */}
             <aside className={`h-screen w-64 flex flex-col fixed lg:static z-50 lg:z-10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-lg border-r border-zinc-200 dark:border-zinc-800 shadow-lg lg:shadow-none transition-transform duration-300 ${
                 sidebarOpen ? "translate-x-0" : "-translate-x-full"
             } lg:translate-x-0`}>
@@ -79,42 +79,37 @@ export default function SidebarLayout() {
                 </div>
 
                 <nav className="flex-1 flex flex-col gap-1 px-4 py-4 text-sm font-medium">
-                    <NavLink
-                        to="/dashboard"
-                        className={({ isActive }) =>
-                            `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
-                                isActive
-                                    ? "bg-blue-500 text-white scale-105"
-                                    : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
-                            }`
-                        }
-                    >
+                    <NavLink to="/dashboard" className={({ isActive }) =>
+                        `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
+                            isActive
+                                ? "bg-blue-500 text-white scale-105"
+                                : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
+                        }`
+                    }>
                         <LayoutDashboard className="w-4 h-4" />
                         Dashboard
                     </NavLink>
-
-                    <NavLink
-                        to="/settings"
-                        className={({ isActive }) =>
-                            `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
-                                isActive
-                                    ? "bg-blue-500 text-white scale-105"
-                                    : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
-                            }`
-                        }
-                    >
+                    <NavLink to="/settings" className={({ isActive }) =>
+                        `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
+                            isActive
+                                ? "bg-blue-500 text-white scale-105"
+                                : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
+                        }`
+                    }>
                         <Settings className="w-4 h-4" />
                         Einstellungen
                     </NavLink>
                 </nav>
             </aside>
 
-            {/* Main Content */}
             <main className="flex-1 flex flex-col min-h-screen overflow-y-auto p-6 lg:p-10 relative z-0">
                 <div className="flex justify-end mb-6 relative z-50">
                     <AccountDropdown />
                 </div>
                 <Outlet context={{ theme, setTheme }} />
+                <StatModal /> {
+
+            }
             </main>
         </div>
     );

@@ -1,10 +1,14 @@
 // src/components/StatModal.jsx
 import React from "react";
 import { useModal } from "../context/ModalContext";
+import AnimatedBorder from "./AnimatedBorder";
+import StatContentSteps from "./statContent/StatContentSteps";
+import StatContentWater from "./statContent/StatContentWater";
+import StatContentSupplement from "./statContent/StatContentSupplement";
+import StatContentCustom from "./statContent/StatContentCustom";
 
 export default function StatModal() {
     const { modalData, closeModal } = useModal();
-
     if (!modalData) return null;
 
     const handleBackdropClick = (e) => {
@@ -16,60 +20,13 @@ export default function StatModal() {
     const renderContent = () => {
         switch (modalData.type) {
             case "steps":
-                return (
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-semibold">Schritte hinzufügen</h2>
-                        <button
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                            onClick={() => alert("+500 Schritte senden") /* TODO */}
-                        >
-                            + 500 Schritte
-                        </button>
-                    </div>
-                );
+                return <StatContentSteps data={modalData} />;
             case "water":
-                return (
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-semibold">Wasser hinzufügen</h2>
-                        <button
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                            onClick={() => alert("+250ml Wasser senden") /* TODO */}
-                        >
-                            + 250 ml Wasser
-                        </button>
-                    </div>
-                );
+                return <StatContentWater data={modalData} />;
             case "supplement":
-                return (
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-semibold">{modalData.name}</h2>
-                        <p>Menge: {modalData.mengeMg} mg</p>
-                        <button
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                            onClick={() => alert("Supplement als genommen markieren") /* TODO */}
-                        >
-                            Als genommen markieren
-                        </button>
-                    </div>
-                );
+                return <StatContentSupplement data={modalData} />;
             case "custom":
-                return (
-                    <div className="space-y-4">
-                        <h2 className="text-2xl font-semibold">{modalData.name}</h2>
-                        <input
-                            type="text"
-                            placeholder="Wert eingeben"
-                            defaultValue={modalData.value}
-                            className="w-full px-4 py-2 border rounded"
-                        />
-                        <button
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                            onClick={() => alert("CustomEntry speichern") /* TODO */}
-                        >
-                            Speichern
-                        </button>
-                    </div>
-                );
+                return <StatContentCustom data={modalData} />;
             default:
                 return <p>Unbekannter Typ</p>;
         }
@@ -78,19 +35,23 @@ export default function StatModal() {
     return (
         <div
             id="modal-backdrop"
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
             onClick={handleBackdropClick}
         >
-            <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl w-full max-w-md shadow-lg">
-                {renderContent()}
-                <div className="mt-6 text-right">
-                    <button
-                        onClick={closeModal}
-                        className="text-zinc-500 hover:text-zinc-800 dark:hover:text-white"
-                    >
-                        Schließen
-                    </button>
-                </div>
+            <div className="w-full max-w-md p-4">
+                <AnimatedBorder>
+                    <div className="glow-inner p-6 space-y-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg">
+                        {renderContent()}
+                        <div className="text-right">
+                            <button
+                                onClick={closeModal}
+                                className="text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"
+                            >
+                                Schließen
+                            </button>
+                        </div>
+                    </div>
+                </AnimatedBorder>
             </div>
         </div>
     );
