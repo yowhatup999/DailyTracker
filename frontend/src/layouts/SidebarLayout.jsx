@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Settings, Menu, X } from "lucide-react";
 import AccountDropdown from "../components/AccountDropdown";
-import StatModal from "../components/StatModal"; // 🆕 Modal-Import
+import StatModal from "../components/StatModal";
 
 export default function SidebarLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -106,10 +106,10 @@ export default function SidebarLayout() {
                 <div className="flex justify-end mb-6 relative z-50">
                     <AccountDropdown />
                 </div>
-                <Outlet context={{ theme, setTheme }} />
-                <StatModal /> {
 
-            }
+                <Outlet context={{ theme, setTheme }} />
+
+                <StatModal />
             </main>
         </div>
     );

@@ -120,4 +120,17 @@ public class DailyEntryService {
     public List<DailyEntry> findByJahr(int jahr) {
         return dailyEntryRepository.findByJahr(jahr);
     }
+
+    public Optional<DailyEntry> patchEntry(Long id, DailyEntry patchData) {
+        return dailyEntryRepository.findById(id).map(entry -> {
+            if (patchData.getSchritte() != null) {
+                entry.setSchritte(patchData.getSchritte());
+            }
+            if (patchData.getWasserMl() != null) {
+                entry.setWasserMl(patchData.getWasserMl());
+            }
+            return dailyEntryRepository.save(entry);
+        });
+    }
+
 }

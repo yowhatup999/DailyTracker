@@ -67,4 +67,12 @@ public class SupplementEntryController {
                 .map(updated -> ResponseEntity.ok(updated))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<SupplementEntry> patchGenommen(@PathVariable Long id, @RequestBody SupplementEntry data) {
+        return service.patchGenommen(id, data.isGenommen())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

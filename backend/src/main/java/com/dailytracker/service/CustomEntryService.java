@@ -41,4 +41,12 @@ public class CustomEntryService {
             return repo.save(existing);
         });
     }
+
+    public Optional<CustomEntry> patchValue(Long id, String newValue) {
+        return repo.findById(id).map(entry -> {
+            entry.setValue(newValue);
+            return repo.save(entry);
+        });
+    }
+
 }

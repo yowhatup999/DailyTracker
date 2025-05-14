@@ -1,28 +1,32 @@
 // src/components/DashboardContent.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import StatCard from "./StatCard";
 import { getTodayDailyEntry } from "../services/api";
 
-export default function DashboardContent() {
+const DashboardContent = forwardRef((props, ref) => {
     const [entry, setEntry] = useState(null);
 
+    const fetchEntry = async () => {
+        try {
+            const response = await getTodayDailyEntry();
+            setEntry(response);
+        } catch (error) {
+            console.error("Fehler beim Laden des DailyEntry:", error);
+        }
+    };
+
     useEffect(() => {
-        const fetchEntry = async () => {
-            try {
-                const response = await getTodayDailyEntry();
-                setEntry(response);
-            } catch (error) {
-                console.error("Fehler beim Laden des DailyEntry:", error);
-            }
-        };
         fetchEntry();
     }, []);
+
+    useImperativeHandle(ref, () => ({
+        refresh: fetchEntry,
+    }));
 
     if (!entry) return <div className="text-center text-zinc-500">Lade Tagesdaten...</div>;
 
     const cards = [];
 
-    // Schritte
     if (entry.schritte !== null) {
         cards.push({
             title: "Tägliche Schritte",
@@ -33,7 +37,6 @@ export default function DashboardContent() {
         });
     }
 
-    // Wasser
     if (entry.wasserMl !== null) {
         cards.push({
             title: "Wasserzufuhr",
@@ -44,8 +47,7 @@ export default function DashboardContent() {
         });
     }
 
-    // Supplements
-    if (entry.supplements && entry.supplements.length > 0) {
+    if (entry.supplements?.length > 0) {
         entry.supplements.forEach((supp) => {
             cards.push({
                 title: supp.name,
@@ -57,15 +59,20 @@ export default function DashboardContent() {
         });
     }
 
-    // Custom Entries
-    if (entry.customEntries && entry.customEntries.length > 0) {
+    if (entry.customEntries?.length > 0) {
         entry.customEntries.forEach((custom) => {
             cards.push({
                 title: custom.name,
                 value: `${custom.value} ${custom.unit || ""}`,
                 description: "Benutzerdefinierter Eintrag",
                 highlight: "purple",
-                onClickData: { type: "custom", id: custom.id, name: custom.name, value: custom.value, unit: custom.unit },
+                onClickData: {
+                    type: "custom",
+                    id: custom.id,
+                    name: custom.name,
+                    value: custom.value,
+                    unit: custom.unit,
+                },
             });
         });
     }
@@ -73,15 +80,10 @@ export default function DashboardContent() {
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {cards.map((card, index) => (
-                <StatCard
-                    key={index}
-                    title={card.title}
-                    value={card.value}
-                    description={card.description}
-                    highlight={card.highlight}
-                    onClickData={card.onClickData}
-                />
+                <StatCard key={index} {...card} />
             ))}
         </div>
     );
-}
+});
+
+export default DashboardContent;

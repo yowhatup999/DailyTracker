@@ -7,26 +7,27 @@ import StatContentWater from "./statContent/StatContentWater";
 import StatContentSupplement from "./statContent/StatContentSupplement";
 import StatContentCustom from "./statContent/StatContentCustom";
 
-export default function StatModal() {
+export default function StatModal({ refreshDashboard }) {
     const { modalData, closeModal } = useModal();
     if (!modalData) return null;
 
-    const handleBackdropClick = (e) => {
-        if (e.target.id === "modal-backdrop") {
-            closeModal();
-        }
+    const refreshAndClose = async () => {
+        if (refreshDashboard) await refreshDashboard();
+        closeModal();
     };
+
+    const commonProps = { data: modalData, refresh: refreshAndClose };
 
     const renderContent = () => {
         switch (modalData.type) {
             case "steps":
-                return <StatContentSteps data={modalData} />;
+                return <StatContentSteps {...commonProps} />;
             case "water":
-                return <StatContentWater data={modalData} />;
+                return <StatContentWater {...commonProps} />;
             case "supplement":
-                return <StatContentSupplement data={modalData} />;
+                return <StatContentSupplement {...commonProps} />;
             case "custom":
-                return <StatContentCustom data={modalData} />;
+                return <StatContentCustom {...commonProps} />;
             default:
                 return <p>Unbekannter Typ</p>;
         }
@@ -36,7 +37,7 @@ export default function StatModal() {
         <div
             id="modal-backdrop"
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-            onClick={handleBackdropClick}
+            onClick={(e) => e.target.id === "modal-backdrop" && closeModal()}
         >
             <div className="w-full max-w-md p-4">
                 <AnimatedBorder>

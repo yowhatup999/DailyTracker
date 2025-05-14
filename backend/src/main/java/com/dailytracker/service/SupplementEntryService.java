@@ -45,4 +45,12 @@ public class SupplementEntryService {
                 });
     }
 
+    public Optional<SupplementEntry> patchGenommen(Long id, boolean genommen) {
+        return repository.findById(id).map(entry -> {
+            entry.setGenommen(genommen);
+            return repository.save(entry);
+        });
+    }
+
+
 }

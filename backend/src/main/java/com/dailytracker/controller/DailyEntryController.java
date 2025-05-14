@@ -68,4 +68,12 @@ public class DailyEntryController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<DailyEntry> patchEntry(@PathVariable Long id, @RequestBody DailyEntry patchData) {
+        return service.patchEntry(id, patchData)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

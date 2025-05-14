@@ -55,4 +55,12 @@ public class CustomEntryController {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomEntry> patchValue(@PathVariable Long id, @RequestBody CustomEntry data) {
+        return service.patchValue(id, data.getValue())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
