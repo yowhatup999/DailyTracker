@@ -3,29 +3,64 @@ import axios from 'axios';
 
 const API_BASE = 'http://localhost:8080/api';
 
+// Axios-Instanz
 const api = axios.create({
     baseURL: API_BASE,
 });
 
-// Token automatisch anhängen, falls vorhanden
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('dailytracker_token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-});
+}, (error) => Promise.reject(error));
 
-// LOGIN: gibt direkt den Token-String zurück
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status !== 401 || originalRequest._retry) {
+            return Promise.reject(error);
+        }
+
+        originalRequest._retry = true;
+
+        try {
+            const refreshToken = localStorage.getItem('dailytracker_refresh');
+            if (!refreshToken) throw new Error('Kein Refresh-Token vorhanden');
+
+            const response = await axios.post(`${API_BASE}/auth/refresh-token`, {
+                refreshToken,
+            }, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            const { accessToken } = response.data;
+            localStorage.setItem('dailytracker_token', accessToken);
+
+            // Access-Token im neuen Request setzen
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            return api(originalRequest); // erneut senden
+        } catch (refreshError) {
+            console.error('Token-Refresh fehlgeschlagen:', refreshError);
+            localStorage.removeItem('dailytracker_token');
+            localStorage.removeItem('dailytracker_refresh');
+            window.location.href = '/login'; // optional redirect
+            return Promise.reject(refreshError);
+        }
+    }
+);
+
+// === Auth ===
 export const loginUser = async (email, password) => {
     const response = await api.post('/auth/login', { email, password }, {
         headers: { 'Content-Type': 'application/json' },
-        responseType: 'text',
     });
-    return response.data;
+    return response.data; // enthält accessToken + refreshToken
 };
 
-// REGISTER
 export const registerUser = async (email, password) => {
     const response = await api.post('/auth/register', { email, password }, {
         headers: { 'Content-Type': 'application/json' },
@@ -34,29 +69,40 @@ export const registerUser = async (email, password) => {
     return response.data;
 };
 
-// GET: DailyEntry
+export const refreshToken = async () => {
+    const refreshToken = localStorage.getItem('dailytracker_refresh');
+    if (!refreshToken) throw new Error('Kein Refresh-Token gespeichert');
+
+    const response = await api.post('/auth/refresh-token', {
+        refreshToken,
+    }, {
+        headers: { 'Content-Type': 'application/json' },
+    });
+
+    const { accessToken } = response.data;
+    localStorage.setItem('dailytracker_token', accessToken);
+    return accessToken;
+};
+
+// === DailyEntry ===
 export const getTodayDailyEntry = async () => {
     const response = await api.get('/daily/today');
     return response.data;
 };
 
-// PATCH: DailyEntry (z. B. Schritte, Wasser)
 export const patchDailyEntry = async (id, data) => {
     const response = await api.patch(`/daily/${id}`, data);
     return response.data;
 };
 
-// PATCH: SupplementEntry (nur 'genommen' ändern)
+// === SupplementEntry ===
 export const patchSupplementEntry = async (id, data) => {
     const response = await api.patch(`/supplement/${id}`, data);
     return response.data;
 };
 
-// PATCH: CustomEntry (z. B. value)
+// === CustomEntry ===
 export const patchCustomEntry = async (id, data) => {
     const response = await api.patch(`/custom/${id}`, data);
     return response.data;
 };
-
-
-

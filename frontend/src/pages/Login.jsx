@@ -13,10 +13,13 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = await loginUser(email, password);
-            localStorage.setItem("dailytracker_token", token);
+            const { accessToken, refreshToken } = await loginUser(email, password);
+            localStorage.setItem("dailytracker_token", accessToken);
+            localStorage.setItem("dailytracker_refresh", refreshToken);
+            setMessage({ text: 'Login erfolgreich!', type: 'success' });
             navigate("/dashboard");
         } catch (error) {
+            console.error("Login-Fehler:", error);
             setMessage({ text: 'Login fehlgeschlagen!', type: 'error' });
         }
     };
