@@ -7,7 +7,7 @@ import StatContentWater from "./statContent/StatContentWater";
 import StatContentSupplement from "./statContent/StatContentSupplement";
 import StatContentCustom from "./statContent/StatContentCustom";
 
-export default function StatModal({ refreshDashboard }) {
+export default function StatModal({ refreshDashboard, onLocalUpdate }) {
     const { modalData, closeModal } = useModal();
     if (!modalData) return null;
 
@@ -16,7 +16,11 @@ export default function StatModal({ refreshDashboard }) {
         closeModal();
     };
 
-    const commonProps = { data: modalData, refresh: refreshAndClose };
+    const commonProps = {
+        data: modalData,
+        refresh: refreshAndClose,
+        onLocalUpdate: onLocalUpdate, // 👈 Callback an alle weiterreichen
+    };
 
     const renderContent = () => {
         switch (modalData.type) {

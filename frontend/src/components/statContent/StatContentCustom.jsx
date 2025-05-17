@@ -1,35 +1,50 @@
+// src/components/statContent/StatContentCustom.jsx
 import React, { useState } from "react";
 import { patchCustomEntry } from "../../services/api";
-
+import { useModal } from "../../context/ModalContext";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
-export default function StatContentCustom({ modalData, refresh }) {
-    const [inputValue, setInputValue] = useState(modalData.value || "");
+export default function StatContentCustom({ data, refresh, onLocalUpdate }) {
+    const { closeModal } = useModal();
+    const [value, setValue] = useState(data.value || "");
 
     const handleSave = async () => {
-        await patchCustomEntry(modalData.id, { value: inputValue });
-        refresh();
+        if (!value.trim()) return alert("Feld darf nicht leer sein");
+
+        onLocalUpdate?.({
+            type: "custom",
+            id: data.id,
+            name: data.name,
+            value: value,
+            unit: data.unit,
+        });
+
+        await patchCustomEntry(data.id, { value });
+
+        setTimeout(() => {
+            refresh();
+        }, 500);
     };
 
     return (
         <div className="space-y-4">
-            <h2 className="text-2xl font-semibold">{modalData.name}</h2>
-            <div className="flex items-center gap-2">
-                <InputField
-                    type="text"
-                    className="w-full px-4 py-2 border rounded"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                />
-                {modalData.unit && <span className="text-zinc-500">{modalData.unit}</span>}
+            <h2 className="text-2xl font-semibold">{data.name}</h2>
+            <InputField
+                type="text"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder={`Wert eingeben (${data.unit || "z. B. mg"})`}
+                className="input"
+            />
+            <div className="flex justify-between">
+                <AddButton onClick={handleSave} className="btn-blue">
+                    Speichern
+                </AddButton>
+                <AddButton onClick={closeModal} className="btn-gray">
+                    Schließen
+                </AddButton>
             </div>
-            <AddButton
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                onClick={handleSave}
-            >
-                Speichern
-            </AddButton>
         </div>
     );
 }

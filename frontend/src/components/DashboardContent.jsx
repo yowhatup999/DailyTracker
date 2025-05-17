@@ -23,59 +23,83 @@ const DashboardContent = forwardRef((props, ref) => {
         refresh: fetchEntry,
     }));
 
+    const handleLocalUpdate = (type, payload) => {
+        setEntry((prev) => {
+            if (!prev) return prev;
+
+            const updated = { ...prev };
+
+            if (type === "steps") {
+                updated.schritte += payload.amount;
+            } else if (type === "water") {
+                updated.wasserMl += payload.amount;
+            } else if (type === "supplement") {
+                updated.supplements = updated.supplements.map((s) =>
+                    s.id === payload.id ? { ...s, genommen: payload.genommen } : s
+                );
+            } else if (type === "custom") {
+                updated.customEntries = updated.customEntries.map((c) =>
+                    c.id === payload.id ? { ...c, value: payload.value } : c
+                );
+            }
+
+            return updated;
+        });
+    };
+
     if (!entry) return <div className="text-center text-zinc-500">Lade Tagesdaten...</div>;
 
     const cards = [];
 
+    const addCard = (title, value, description, highlight, onClickData) => {
+        cards.push({ title, value, description, highlight, onClickData });
+    };
+
     if (entry.schritte !== null) {
-        cards.push({
-            title: "Tägliche Schritte",
-            value: `${entry.schritte} / 10000`,
-            description: "Schrittziel des Tages",
-            highlight: "green",
-            onClickData: { type: "steps", entryId: entry.id, value: entry.schritte },
-        });
+        addCard(
+            "Tägliche Schritte",
+            `${entry.schritte} Schritte`,
+            "Schrittziel des Tages",
+            "green",
+            { type: "steps", entryId: entry.id, value: entry.schritte }
+        );
     }
 
     if (entry.wasserMl !== null) {
-        cards.push({
-            title: "Wasserzufuhr",
-            value: `${entry.wasserMl} ml`,
-            description: "Wasser heute",
-            highlight: "blue",
-            onClickData: { type: "water", entryId: entry.id, value: entry.wasserMl },
-        });
+        addCard(
+            "Wasserzufuhr",
+            `${entry.wasserMl} ml`,
+            "Wasser heute",
+            "blue",
+            { type: "water", entryId: entry.id, value: entry.wasserMl }
+        );
     }
 
-    if (entry.supplements?.length > 0) {
-        entry.supplements.forEach((supp) => {
-            cards.push({
-                title: supp.name,
-                value: supp.genommen ? "eingenommen" : "nicht genommen",
-                description: `${supp.mengeMg} mg`,
-                highlight: supp.genommen ? "blue" : "red",
-                onClickData: { type: "supplement", id: supp.id, name: supp.name, genommen: supp.genommen },
-            });
-        });
-    }
+    entry.supplements?.forEach((supp) => {
+        addCard(
+            supp.name,
+            supp.genommen ? "eingenommen" : "nicht genommen",
+            `${supp.mengeMg} mg`,
+            supp.genommen ? "blue" : "red",
+            { type: "supplement", id: supp.id, name: supp.name, genommen: supp.genommen }
+        );
+    });
 
-    if (entry.customEntries?.length > 0) {
-        entry.customEntries.forEach((custom) => {
-            cards.push({
-                title: custom.name,
-                value: `${custom.value} ${custom.unit || ""}`,
-                description: "Benutzerdefinierter Eintrag",
-                highlight: "purple",
-                onClickData: {
-                    type: "custom",
-                    id: custom.id,
-                    name: custom.name,
-                    value: custom.value,
-                    unit: custom.unit,
-                },
-            });
-        });
-    }
+    entry.customEntries?.forEach((custom) => {
+        addCard(
+            custom.name,
+            `${custom.value} ${custom.unit || ""}`.trim(),
+            "Benutzerdefinierter Eintrag",
+            "purple",
+            {
+                type: "custom",
+                id: custom.id,
+                name: custom.name,
+                value: custom.value,
+                unit: custom.unit,
+            }
+        );
+    });
 
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
@@ -87,3 +111,4 @@ const DashboardContent = forwardRef((props, ref) => {
 });
 
 export default DashboardContent;
+export const onLocalUpdateForModal = DashboardContent.handleLocalUpdate;
