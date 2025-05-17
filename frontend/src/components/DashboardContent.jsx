@@ -26,7 +26,6 @@ const DashboardContent = forwardRef((props, ref) => {
     const handleLocalUpdate = (type, payload) => {
         setEntry((prev) => {
             if (!prev) return prev;
-
             const updated = { ...prev };
 
             if (type === "steps") {
@@ -101,6 +100,13 @@ const DashboardContent = forwardRef((props, ref) => {
         );
     });
 
+    cards.push({
+        isAddCard: true,
+        isEmpty:
+            (entry.supplements?.length ?? 0) + (entry.customEntries?.length ?? 0) === 0,
+        onClickData: { type: "create-entry" },
+    });
+
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {cards.map((card, index) => (
@@ -111,4 +117,3 @@ const DashboardContent = forwardRef((props, ref) => {
 });
 
 export default DashboardContent;
-export const onLocalUpdateForModal = DashboardContent.handleLocalUpdate;
