@@ -13,9 +13,15 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { accessToken, refreshToken } = await loginUser(email, password);
+            const response = await loginUser(email, password);
+            console.log("LOGIN RESPONSE:", response);
+
+            const { accessToken, refreshToken, username } = response;
+
             localStorage.setItem("dailytracker_token", accessToken);
             localStorage.setItem("dailytracker_refresh", refreshToken);
+            localStorage.setItem("dailytracker_username", username || email.split("@")[0]);
+
             setMessage({ text: 'Login erfolgreich!', type: 'success' });
             navigate("/dashboard");
         } catch (error) {
@@ -50,7 +56,7 @@ export default function Login() {
                                     className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="admin"
+                                    placeholder="********"
                                 />
                             </div>
 

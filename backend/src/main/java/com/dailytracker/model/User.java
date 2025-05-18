@@ -26,6 +26,8 @@ public class User implements UserDetails {
 
     private boolean enabled = true;
 
+    private String username;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
@@ -33,7 +35,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email; // Login über E-Mail
+        return email;
     }
 
     @Override

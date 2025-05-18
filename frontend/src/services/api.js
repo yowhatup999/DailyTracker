@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const API_BASE = 'http://localhost:8080/api';
 
-// Axios-Instanz
 const api = axios.create({
     baseURL: API_BASE,
 });
@@ -37,17 +36,19 @@ api.interceptors.response.use(
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            const { accessToken } = response.data;
+            const { accessToken, username } = response.data;
             localStorage.setItem('dailytracker_token', accessToken);
+            if (username) {
+                localStorage.setItem("dailytracker_username", username);
+            }
 
-            // Access-Token im neuen Request setzen
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-            return api(originalRequest); // erneut senden
+            return api(originalRequest);
         } catch (refreshError) {
             console.error('Token-Refresh fehlgeschlagen:', refreshError);
             localStorage.removeItem('dailytracker_token');
             localStorage.removeItem('dailytracker_refresh');
-            window.location.href = '/login'; // optional redirect
+            window.location.href = '/login';
             return Promise.reject(refreshError);
         }
     }
@@ -58,7 +59,11 @@ export const loginUser = async (email, password) => {
     const response = await api.post('/auth/login', { email, password }, {
         headers: { 'Content-Type': 'application/json' },
     });
-    return response.data; // enthält accessToken + refreshToken
+
+    const { accessToken, refreshToken, username } = response.data;
+    console.log("Login response:", response.data);
+
+    return { accessToken, refreshToken, username };
 };
 
 export const registerUser = async (email, password) => {

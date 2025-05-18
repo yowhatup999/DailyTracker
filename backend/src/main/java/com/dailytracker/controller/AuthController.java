@@ -36,14 +36,18 @@ public class AuthController {
                 return ResponseEntity.badRequest().body("Email already in use");
             }
 
+            // Username aus der E-Mail generieren
+            String extractedUsername = request.getEmail().split("@")[0];
+
             var user = User.builder()
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
+                    .username(extractedUsername)
                     .enabled(true)
                     .build();
 
             userRepository.save(user);
-            log.info("Neuer Benutzer registriert: {}", request.getEmail());
+            log.info("Neuer Benutzer registriert: {} (Username: {})", request.getEmail(), extractedUsername);
             return ResponseEntity.ok("Registration successful");
         } catch (Exception e) {
             log.error("Fehler bei der Registrierung", e);
@@ -64,7 +68,7 @@ public class AuthController {
             var refreshToken = jwtService.generateRefreshToken(user);
 
             log.info("Benutzer erfolgreich eingeloggt: {}", request.getEmail());
-            return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken()));
+            return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken(), user.getUsername()));
         } catch (Exception e) {
             log.error("Login fehlgeschlagen für {}", request.getEmail(), e);
             return ResponseEntity.badRequest().build();
@@ -80,7 +84,11 @@ public class AuthController {
             var newAccessToken = jwtService.generateToken(refreshToken.getUser());
 
             log.info("Access Token erfolgreich erneuert für Benutzer: {}", refreshToken.getUser().getEmail());
-            return ResponseEntity.ok(new AuthResponse(newAccessToken, refreshToken.getToken()));
+            return ResponseEntity.ok(new AuthResponse(
+                    newAccessToken,
+                    refreshToken.getToken(),
+                    refreshToken.getUser().getUsername()
+            ));
         } catch (Exception e) {
             log.error("Fehler beim Erneuern des Tokens", e);
             return ResponseEntity.status(401).build();

@@ -1,25 +1,50 @@
 // src/pages/Dashboard.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import AnimatedBorder from "../components/AnimatedBorder";
 import DashboardContent from "../components/DashboardContent";
+import TopBar from "../components/TopBar";
+import { fetchWeatherAndMoon } from "../services/astroApi";
 
 export default function Dashboard() {
     const isReady = useAuth();
-    if (!isReady) return null;
+    const [astroData, setAstroData] = useState(null);
+    const [username, setUsername] = useState(null);
 
-    const weatherPlaceholder = "Sonnig, 25°C ☀️";
-    const moonPlaceholder = "🌑 Neumond";
+    useEffect(() => {
+        const storedName = localStorage.getItem("dailytracker_username");
+        if (storedName) {
+            setUsername(storedName);
+        }
+
+        // Wetterdaten mit 4h-Cache prüfen
+        const cache = localStorage.getItem("dailytracker_astroData");
+        const cacheTime = localStorage.getItem("dailytracker_astroData_time");
+        const now = Date.now();
+
+        if (cache && cacheTime && now - parseInt(cacheTime) < 4 * 60 * 60 * 1000) {
+            setAstroData(JSON.parse(cache));
+        } else {
+            fetchWeatherAndMoon()
+                .then(data => {
+                    setAstroData(data);
+                    localStorage.setItem("dailytracker_astroData", JSON.stringify(data));
+                    localStorage.setItem("dailytracker_astroData_time", now.toString());
+                })
+                .catch(() => setAstroData(null));
+        }
+    }, []);
+
+    if (!isReady) return null;
 
     return (
         <AnimatedBorder>
             <div className="w-full p-6 sm:p-10 space-y-10">
-                <div className="flex flex-col justify-center items-center text-center space-y-2">
-                    <h1 className="text-4xl font-bold tracking-tight">Willkommen zurück!</h1>
-                    <p className="text-zinc-500 dark:text-zinc-400">
-                        {weatherPlaceholder} | {moonPlaceholder}
-                    </p>
-                </div>
+                <TopBar
+                    name={username}
+                    weather={astroData?.weather}
+                    moon={astroData?.moon}
+                />
                 <DashboardContent />
             </div>
         </AnimatedBorder>
