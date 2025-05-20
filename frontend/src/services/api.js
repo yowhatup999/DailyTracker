@@ -120,3 +120,8 @@ export const patchCustomEntry = async (id, data) => {
     const response = await api.patch(`/custom/${id}`, data);
     return response.data;
 };
+
+export const getDashboardInfo = async () => {
+    const response = await api.get('/dashboard/info');
+    return response.data;
+};
