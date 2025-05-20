@@ -35,7 +35,7 @@ public class DashboardController {
                 getMoonEmoji(entry.getMondphase())
         );
 
-        return new DashboardInfoResponse(user.getUsername(), weather, moon);
+        return new DashboardInfoResponse(user.getDisplayName(), weather, moon);
     }
 
     private String getWeatherEmoji(String status) {

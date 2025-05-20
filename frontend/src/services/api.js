@@ -115,7 +115,7 @@ export const patchSupplementEntry = async (id, data) => {
     return response.data;
 };
 
-// === CustomEntry ===
+// === CustomEntry ===t
 export const patchCustomEntry = async (id, data) => {
     const response = await api.patch(`/custom/${id}`, data);
     return response.data;
