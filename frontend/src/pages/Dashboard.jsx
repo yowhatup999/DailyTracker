@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import AnimatedBorder from "../components/AnimatedBorder";
-import DashboardContent from "../components/DashboardContent";
 import TopBar from "../components/TopBar";
+import DashboardWrapper from "./DashboardWrapper";
 import { fetchWeatherAndMoon } from "../services/astroApi";
 
 export default function Dashboard() {
@@ -45,7 +45,7 @@ export default function Dashboard() {
                     weather={astroData?.weather}
                     moon={astroData?.moon}
                 />
-                <DashboardContent />
+                <DashboardWrapper />
             </div>
         </AnimatedBorder>
     );

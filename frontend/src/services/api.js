@@ -36,10 +36,13 @@ api.interceptors.response.use(
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            const { accessToken, username } = response.data;
+            const { accessToken, username, email } = response.data;
             localStorage.setItem('dailytracker_token', accessToken);
             if (username) {
-                localStorage.setItem("dailytracker_username", username);
+                localStorage.setItem('dailytracker_username', username);
+            }
+            if (email) {
+                localStorage.setItem('dailytracker_email', email);
             }
 
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -60,10 +63,16 @@ export const loginUser = async (email, password) => {
         headers: { 'Content-Type': 'application/json' },
     });
 
-    const { accessToken, refreshToken, username } = response.data;
+    const { accessToken, refreshToken, username, email: returnedEmail } = response.data;
+
+    localStorage.setItem('dailytracker_token', accessToken);
+    localStorage.setItem('dailytracker_refresh', refreshToken);
+    localStorage.setItem('dailytracker_username', username);
+    localStorage.setItem('dailytracker_email', returnedEmail);
+
     console.log("Login response:", response.data);
 
-    return { accessToken, refreshToken, username };
+    return { accessToken, refreshToken, username, email: returnedEmail };
 };
 
 export const registerUser = async (email, password) => {

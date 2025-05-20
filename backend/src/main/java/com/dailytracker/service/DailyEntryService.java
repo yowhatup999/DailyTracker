@@ -41,6 +41,7 @@ public class DailyEntryService {
             existing.setWetterTemp(updatedEntry.getWetterTemp());
             existing.setWetterLuftdruck(updatedEntry.getWetterLuftdruck());
             existing.setMondphase(updatedEntry.getMondphase());
+            existing.setWetterStatus(updatedEntry.getWetterStatus());
             return dailyEntryRepository.save(existing);
         });
     }
@@ -87,7 +88,10 @@ public class DailyEntryService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        return getOrCreateTodayForUser(user);
+    }
 
+    public DailyEntry getOrCreateTodayForUser(User user) {
         LocalDate today = LocalDate.now();
         List<DailyEntry> existing = dailyEntryRepository.findByDatum(today);
         for (DailyEntry e : existing) {
@@ -104,6 +108,7 @@ public class DailyEntryService {
         newEntry.setSchlafStunden(0);
         newEntry.setWetterTemp(null);
         newEntry.setWetterLuftdruck(null);
+        newEntry.setWetterStatus(null);
         newEntry.setMondphase(null);
 
         return createWithCustomEntries(newEntry);

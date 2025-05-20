@@ -36,7 +36,6 @@ public class AuthController {
                 return ResponseEntity.badRequest().body("Email already in use");
             }
 
-            // Username aus der E-Mail generieren
             String extractedUsername = request.getEmail().split("@")[0];
 
             var user = User.builder()
@@ -68,7 +67,7 @@ public class AuthController {
             var refreshToken = jwtService.generateRefreshToken(user);
 
             log.info("Benutzer erfolgreich eingeloggt: {}", request.getEmail());
-            return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken(), user.getUsername()));
+            return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken(), user.getUsername(), user.getEmail()));
         } catch (Exception e) {
             log.error("Login fehlgeschlagen für {}", request.getEmail(), e);
             return ResponseEntity.badRequest().build();
@@ -81,13 +80,15 @@ public class AuthController {
             var refreshToken = refreshTokenRepository.findByToken(request.getRefreshToken())
                     .orElseThrow(() -> new RuntimeException("Refresh token not found"));
 
-            var newAccessToken = jwtService.generateToken(refreshToken.getUser());
+            var user = refreshToken.getUser();
+            var newAccessToken = jwtService.generateToken(user);
 
-            log.info("Access Token erfolgreich erneuert für Benutzer: {}", refreshToken.getUser().getEmail());
+            log.info("Access Token erfolgreich erneuert für Benutzer: {}", user.getEmail());
             return ResponseEntity.ok(new AuthResponse(
                     newAccessToken,
                     refreshToken.getToken(),
-                    refreshToken.getUser().getUsername()
+                    user.getUsername(),
+                    user.getEmail()
             ));
         } catch (Exception e) {
             log.error("Fehler beim Erneuern des Tokens", e);

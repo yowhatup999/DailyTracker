@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,11 +23,15 @@ public class DailyEntry {
 
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate datum;
+
     private Integer schritte;
     private Integer schlafStunden;
     private Integer wasserMl;
+
     private Double wetterTemp;
     private Double wetterLuftdruck;
+    private String wetterStatus;
+
     private String mondphase;
 
     @ManyToOne
@@ -42,5 +45,4 @@ public class DailyEntry {
     @OneToMany(mappedBy = "dailyEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "custom-daily")
     private List<CustomEntry> customEntries = new ArrayList<>();
-
 }

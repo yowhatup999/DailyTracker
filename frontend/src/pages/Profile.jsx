@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Profile() {
     const navigate = useNavigate();
 
+    const username = localStorage.getItem("dailytracker_username") || "";
+    const email = localStorage.getItem("dailytracker_email") || "";
+
     const handleLogout = () => {
         localStorage.clear();
         navigate("/login");
@@ -18,19 +21,19 @@ export default function Profile() {
                     <div className="glow-inner p-8 space-y-6 text-center">
                         <h1 className="text-3xl font-bold tracking-tight mb-6">Profil</h1>
 
-                        {/* Platzhalter Felder für spätere API */}
+                        {/* Nutzerinfo Anzeige */}
                         <div className="space-y-4">
                             <input
                                 type="text"
-                                placeholder="Benutzername"
-                                className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                                value={username}
                                 disabled
+                                className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 focus:outline-none text-black dark:text-white"
                             />
                             <input
                                 type="email"
-                                placeholder="E-Mail"
-                                className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black dark:text-white"
+                                value={email}
                                 disabled
+                                className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 focus:outline-none text-black dark:text-white"
                             />
                             <input
                                 type="password"

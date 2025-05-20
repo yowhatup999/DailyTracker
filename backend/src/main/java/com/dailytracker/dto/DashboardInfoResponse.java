@@ -1,15 +1,14 @@
 package com.dailytracker.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
-    private String accessToken;
-    private String refreshToken;
+public class DashboardInfoResponse {
     private String username;
-    private String email;
+    private WeatherDTO weather;
+    private MoonDTO moon;
 }
