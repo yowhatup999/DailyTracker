@@ -19,6 +19,7 @@ public class DailyEntryService {
     private final CustomEntryTemplateRepository customEntryTemplateRepository;
     private final SupplementDefinitionRepository supplementDefinitionRepository;
     private final UserRepository userRepository;
+    private final AstroApiService astroApiService;
 
     public List<DailyEntry> findAll() {
         return dailyEntryRepository.findAll();
@@ -44,6 +45,32 @@ public class DailyEntryService {
             existing.setWetterStatus(updatedEntry.getWetterStatus());
             return dailyEntryRepository.save(existing);
         });
+    }
+
+    public void updateMissingAstroData(DailyEntry entry) {
+        boolean updated = false;
+
+        if (entry.getWetterTemp() == null || entry.getWetterStatus() == null || entry.getWetterLuftdruck() == null) {
+            var weather = astroApiService.fetchCurrentWeather();
+            if (weather != null) {
+                entry.setWetterTemp(weather.getTemperature());
+                entry.setWetterLuftdruck(weather.getPressure());
+                entry.setWetterStatus(weather.getStatus());
+                updated = true;
+            }
+        }
+
+        if (entry.getMondphase() == null) {
+            var moon = astroApiService.fetchCurrentMoonPhase();
+            if (moon != null) {
+                entry.setMondphase(moon.getPhase());
+                updated = true;
+            }
+        }
+
+        if (updated) {
+            dailyEntryRepository.save(entry);
+        }
     }
 
     public DailyEntry createWithCustomEntries(DailyEntry entry) {

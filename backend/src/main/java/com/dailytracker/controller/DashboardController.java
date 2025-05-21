@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
@@ -22,6 +20,9 @@ public class DashboardController {
     @GetMapping("/info")
     public DashboardInfoResponse getDashboardInfo(@AuthenticationPrincipal User user) {
         DailyEntry entry = dailyEntryService.getOrCreateTodayForUser(user);
+
+        // Saubere gekapselte Lazy-Update-Logik
+        dailyEntryService.updateMissingAstroData(entry);
 
         WeatherDTO weather = new WeatherDTO(
                 entry.getWetterStatus(),
@@ -39,7 +40,7 @@ public class DashboardController {
     }
 
     private String getWeatherEmoji(String status) {
-        if (status == null) return "🌈";
+        if (status == null) return "❗";
         return switch (status.toLowerCase()) {
             case "sonnig" -> "☀️";
             case "bewölkt" -> "☁️";

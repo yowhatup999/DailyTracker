@@ -19,15 +19,15 @@ export default function Dashboard() {
             });
     }, []);
 
-    if (!isReady) return null;
+    if (!isReady || !astroData) return null;
 
     return (
         <AnimatedBorder>
             <div className="w-full p-6 sm:p-10 space-y-10">
                 <TopBar
-                    name={astroData?.username}
-                    weather={astroData?.weather}
-                    moon={astroData?.moon}
+                    name={astroData.username}
+                    weather={astroData.weather}
+                    moon={astroData.moon}
                 />
                 <DashboardWrapper />
             </div>
