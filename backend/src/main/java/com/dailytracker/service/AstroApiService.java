@@ -50,20 +50,31 @@ public class AstroApiService {
     }
 
     public MoonData fetchMoonPhase() {
-        String today = LocalDate.now().toString();
-        String url = String.format(
-                "https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&daily=moon_phase&timezone=auto&start_date=%s&end_date=%s",
-                LATITUDE, LONGITUDE, today, today
-        );
+        String url = "https://shrewdly.herokuapp.com/?lang=de";
 
         try {
             Map response = restTemplate.getForObject(url, Map.class);
-            Map daily = (Map) response.get("daily");
+            if (response == null || !response.containsKey("data")) {
+                log.error("Unerwartete API-Struktur (data fehlt): " + response);
+                return null;
+            }
 
-            double phase = ((java.util.List<Double>) daily.get("moon_phase")).get(0);
-            return moonPhaseFromValue(phase);
+            Map data = (Map) response.get("data");
+            Map message = (Map) data.get("message");
+
+            String name = (String) message.get("name");
+            String emoji = (String) message.get("symbol");
+
+            if (name == null || emoji == null) {
+                log.error("Mondphasen-Daten fehlen: " + message);
+                return null;
+            }
+
+            // Deutsch-Übersetzung optional:
+            String translated = translateMoonPhaseToGerman(name);
+            return new MoonData(translated, emoji);
         } catch (Exception e) {
-            log.error("Fehler beim Abrufen von Mondphase", e);
+            log.error("Fehler beim Abrufen der Mondphase von Shrewd API", e);
             return null;
         }
     }
@@ -85,15 +96,18 @@ public class AstroApiService {
         };
     }
 
-    private MoonData moonPhaseFromValue(double value) {
-        if (value < 0.03 || value > 0.97) return new MoonData("Neumond", "🌑");
-        if (value < 0.22) return new MoonData("Zunehmende Sichel", "🌒");
-        if (value < 0.28) return new MoonData("Erstes Viertel", "🌓");
-        if (value < 0.47) return new MoonData("Zunehmender Mond", "🌔");
-        if (value < 0.53) return new MoonData("Vollmond", "🌕");
-        if (value < 0.72) return new MoonData("Abnehmender Mond", "🌖");
-        if (value < 0.78) return new MoonData("Letztes Viertel", "🌗");
-        return new MoonData("Abnehmende Sichel", "🌘");
+    private String translateMoonPhaseToGerman(String english) {
+        return switch (english.toLowerCase()) {
+            case "new moon" -> "Neumond";
+            case "waxing crescent" -> "Zunehmende Sichel";
+            case "first quarter" -> "Erstes Viertel";
+            case "waxing gibbous" -> "Zunehmender Mond";
+            case "full moon" -> "Vollmond";
+            case "waning gibbous" -> "Abnehmender Mond";
+            case "last quarter" -> "Letztes Viertel";
+            case "waning crescent" -> "Abnehmende Sichel";
+            default -> english;
+        };
     }
 
     @Getter @Setter
