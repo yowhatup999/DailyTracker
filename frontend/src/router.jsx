@@ -12,6 +12,7 @@ import Logout from './pages/Logout';
 import RootRedirect from './pages/RootRedirect';
 
 import AuthGuard from './components/AuthGuard';
+import AddEntry from "./pages/AddEntry.jsx";
 
 const router = createBrowserRouter([
     // Öffentliche Routen
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
             { path: '/dashboard', element: <Dashboard /> },
             { path: '/settings', element: <Settings /> },
             { path: '/profile', element: <Profile /> },
+            { path: '/add-entry', element: <AddEntry /> },
         ],
     },
 

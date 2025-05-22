@@ -7,6 +7,7 @@ const api = axios.create({
     baseURL: API_BASE,
 });
 
+// === Interceptors für Token-Handling ===
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('dailytracker_token');
     if (token) {
@@ -70,8 +71,6 @@ export const loginUser = async (email, password) => {
     localStorage.setItem('dailytracker_username', username);
     localStorage.setItem('dailytracker_email', returnedEmail);
 
-    console.log("Login response:", response.data);
-
     return { accessToken, refreshToken, username, email: returnedEmail };
 };
 
@@ -99,8 +98,9 @@ export const refreshToken = async () => {
 };
 
 // === DailyEntry ===
-export const getTodayDailyEntry = async () => {
-    const response = await api.get('/daily/today');
+
+export const createDailyEntry = async (data) => {
+    const response = await api.post('/daily-entry', data);
     return response.data;
 };
 
@@ -109,17 +109,48 @@ export const patchDailyEntry = async (id, data) => {
     return response.data;
 };
 
+export const getTodayDailyEntry = async () => {
+    const response = await api.get('/daily/today');
+    return response.data;
+};
+
 // === SupplementEntry ===
+
+export const createSupplementEntry = async (dailyEntryId, data) => {
+    const response = await api.post(`/supplement-entry/${dailyEntryId}`, data);
+    return response.data;
+};
+
 export const patchSupplementEntry = async (id, data) => {
     const response = await api.patch(`/supplement/${id}`, data);
     return response.data;
 };
 
-// === CustomEntry ===t
+// === CustomEntry ===
+
+export const createCustomEntry = async (dailyEntryId, data) => {
+    const response = await api.post(`/custom-entry/${dailyEntryId}`, data);
+    return response.data;
+};
+
 export const patchCustomEntry = async (id, data) => {
     const response = await api.patch(`/custom/${id}`, data);
     return response.data;
 };
+
+// === SupplementDefinition ===
+
+export const createSupplementDefinition = async (data) => {
+    const response = await api.post('/supplement-definition', data);
+    return response.data;
+};
+
+export const getSupplementDefinitions = async () => {
+    const response = await api.get('/supplement-definition');
+    return response.data;
+};
+
+// === Dashboard Info ===
 
 export const getDashboardInfo = async () => {
     const response = await api.get('/dashboard/info');
