@@ -7,6 +7,12 @@ const api = axios.create({
     baseURL: API_BASE,
 });
 
+export function formatDateToGerman(dateStr) {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split("-");
+    return `${day}.${month}.${year}`;
+}
+
 // === Interceptors für Token-Handling ===
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('dailytracker_token');
@@ -100,7 +106,8 @@ export const refreshToken = async () => {
 // === DailyEntry ===
 
 export const createDailyEntry = async (data) => {
-    const response = await api.post('/daily-entry', data);
+    const fixedData = { ...data, datum: formatDateToGerman(data.datum) };
+    const response = await api.post('/daily', fixedData);
     return response.data;
 };
 
@@ -117,19 +124,22 @@ export const getTodayDailyEntry = async () => {
 // === SupplementEntry ===
 
 export const createSupplementEntry = async (dailyEntryId, data) => {
-    const response = await api.post(`/supplement-entry/${dailyEntryId}`, data);
+    const fixedData = { ...data, datum: formatDateToGerman(data.datum) };
+    const response = await api.post(`/supplements/${dailyEntryId}`, fixedData);
     return response.data;
 };
 
 export const patchSupplementEntry = async (id, data) => {
-    const response = await api.patch(`/supplement/${id}`, data);
+    const response = await api.patch(`/supplements/${id}`, data);
     return response.data;
 };
 
 // === CustomEntry ===
 
 export const createCustomEntry = async (dailyEntryId, data) => {
-    const response = await api.post(`/custom-entry/${dailyEntryId}`, data);
+    const fixedData = { ...data };
+    if (data.datum) fixedData.datum = formatDateToGerman(data.datum);
+    const response = await api.post(`/custom/${dailyEntryId}`, fixedData);
     return response.data;
 };
 
