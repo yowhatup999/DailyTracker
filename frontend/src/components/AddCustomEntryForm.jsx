@@ -50,7 +50,7 @@ export default function AddCustomEntryForm() {
                     value={form.name || ""}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white"
-                    placeholder="z.B. Blutdruck"
+                    placeholder="z.B. Proteine"
                 />
             </div>
             <div>
