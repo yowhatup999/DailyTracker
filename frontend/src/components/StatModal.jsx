@@ -13,13 +13,14 @@ export default function StatModal({ refreshDashboard, onLocalUpdate }) {
 
     const refreshAndClose = async () => {
         if (refreshDashboard) await refreshDashboard();
+        await new Promise((resolve) => setTimeout(resolve, 300));
         closeModal();
     };
 
     const commonProps = {
         data: modalData,
         refresh: refreshAndClose,
-        onLocalUpdate: onLocalUpdate, // 👈 Callback an alle weiterreichen
+        onLocalUpdate: onLocalUpdate,
     };
 
     const renderContent = () => {

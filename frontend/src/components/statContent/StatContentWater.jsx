@@ -5,26 +5,27 @@ import { useModal } from "../../context/ModalContext";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
-export default function StatContentWater({ data, refresh, onLocalUpdate }) {
+export default function StatContentWater({ data, refresh, onLocalUpdate = () => {} }) {
     const { closeModal } = useModal();
     const [localWater, setLocalWater] = useState(data.value || 0);
 
-    const updateWater = async (newValue) => {
-        setLocalWater(newValue); // lokal sichtbar machen
-        onLocalUpdate?.({ type: "water", value: newValue }); // Dashboard updaten
-        await patchDailyEntry(data.entryId, { wasserMl: newValue }); // Backend PATCH
+    const handleUpdate = (newValue) => {
+        setLocalWater(newValue);
+        onLocalUpdate({ type: "water", value: newValue });
+        patchDailyEntry(data.entryId, { wasserMl: newValue });
         setTimeout(() => {
-            refresh(); // danach refresh und close
-        }, 500);
+            closeModal();
+            if (refresh) refresh();
+        }, 300);
     };
 
-    const handleAdd = (amount) => updateWater(localWater + amount);
+    const handleAdd = (amount) => handleUpdate(localWater + amount);
 
     const handleCustomAdd = () => {
         const input = document.getElementById("water-input").value;
         const value = parseInt(input);
         if (isNaN(value)) return alert("Ungültige Eingabe");
-        updateWater(localWater + value);
+        handleUpdate(localWater + value);
     };
 
     return (

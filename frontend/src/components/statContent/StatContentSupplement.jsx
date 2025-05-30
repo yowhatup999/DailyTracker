@@ -4,26 +4,19 @@ import { patchSupplementEntry } from "../../services/api";
 import { useModal } from "../../context/ModalContext";
 import AddButton from "../ui/AddButton";
 
-export default function StatContentSupplement({ data, refresh, onLocalUpdate }) {
+export default function StatContentSupplement({ data, refresh, onLocalUpdate = () => {} }) {
     const { closeModal } = useModal();
     const [genommen, setGenommen] = useState(data.genommen || false);
 
-    const handleToggle = async () => {
+    const handleToggle = () => {
         const newStatus = !genommen;
         setGenommen(newStatus);
-
-        onLocalUpdate?.({
-            type: "supplement",
-            id: data.id,
-            name: data.name,
-            genommen: newStatus,
-        });
-
-        await patchSupplementEntry(data.id, { genommen: newStatus });
-
+        onLocalUpdate({ type: "supplement", id: data.id, name: data.name, genommen: newStatus });
+        patchSupplementEntry(data.id, { genommen: newStatus });
         setTimeout(() => {
-            refresh();
-        }, 500);
+            closeModal();
+            if (refresh) refresh();
+        }, 300);
     };
 
     return (

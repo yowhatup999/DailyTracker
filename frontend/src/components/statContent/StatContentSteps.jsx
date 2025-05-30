@@ -5,26 +5,27 @@ import { useModal } from "../../context/ModalContext";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
-export default function StatContentSteps({ data, refresh, onLocalUpdate }) {
+export default function StatContentSteps({ data, refresh, onLocalUpdate = () => {} }) {
     const { closeModal } = useModal();
     const [localSteps, setLocalSteps] = useState(data.value || 0);
 
-    const updateSteps = async (newValue) => {
-        setLocalSteps(newValue);                            // UI sofort aktualisieren
-        onLocalUpdate?.({ type: "steps", value: newValue }); // Dashboard sofort aktualisieren
-        await patchDailyEntry(data.entryId, { schritte: newValue }); // Backend PATCH
+    const handleUpdate = (newValue) => {
+        setLocalSteps(newValue);
+        onLocalUpdate({ type: "steps", value: newValue });
+        patchDailyEntry(data.entryId, { schritte: newValue });
         setTimeout(() => {
-            refresh(); // Dashboard neu laden + Modal schließen
-        }, 500);
+            closeModal();
+            if (refresh) refresh();
+        }, 300);
     };
 
-    const handleAdd = (amount) => updateSteps(localSteps + amount);
+    const handleAdd = (amount) => handleUpdate(localSteps + amount);
 
     const handleCustomAdd = () => {
         const input = document.getElementById("steps-input").value;
         const value = parseInt(input);
         if (isNaN(value)) return alert("Ungültige Eingabe");
-        updateSteps(localSteps + value);
+        handleUpdate(localSteps + value);
     };
 
     return (

@@ -5,26 +5,18 @@ import { useModal } from "../../context/ModalContext";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
-export default function StatContentCustom({ data, refresh, onLocalUpdate }) {
+export default function StatContentCustom({ data, refresh, onLocalUpdate = () => {} }) {
     const { closeModal } = useModal();
     const [value, setValue] = useState(data.value || "");
 
     const handleSave = async () => {
         if (!value.trim()) return alert("Feld darf nicht leer sein");
-
-        onLocalUpdate?.({
-            type: "custom",
-            id: data.id,
-            name: data.name,
-            value: value,
-            unit: data.unit,
-        });
-
-        await patchCustomEntry(data.id, { value });
-
+        onLocalUpdate({ type: "custom", id: data.id, name: data.name, value, unit: data.unit });
+        patchCustomEntry(data.id, { value });
         setTimeout(() => {
-            refresh();
-        }, 500);
+            closeModal();
+            if (refresh) refresh();
+        }, 300);
     };
 
     return (
@@ -33,7 +25,7 @@ export default function StatContentCustom({ data, refresh, onLocalUpdate }) {
             <InputField
                 type="text"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={e => setValue(e.target.value)}
                 placeholder={`Wert eingeben (${data.unit || "z. B. mg"})`}
                 className="input"
             />
