@@ -20,7 +20,7 @@ export default function StatModal({ refreshDashboard, onLocalUpdate }) {
     const commonProps = {
         data: modalData,
         refresh: refreshAndClose,
-        onLocalUpdate: onLocalUpdate,
+        onLocalUpdate: modalData?.onLocalUpdate || (() => {}),
     };
 
     const renderContent = () => {

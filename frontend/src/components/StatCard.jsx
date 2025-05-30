@@ -2,14 +2,14 @@
 import React from "react";
 import { useModal } from "../context/ModalContext";
 
-export default function StatCard({ title, value, description, highlight, onClickData, onCardClick }) {
+export default function StatCard({ title, value, description, highlight, onClickData, onCardClick, onLocalUpdate }) {
     const { openModal } = useModal();
 
     const isAddCard = onClickData?.type === "create-entry";
 
     const handleClick = () => {
         if (isAddCard && onCardClick) return onCardClick(onClickData);
-        if (onClickData) openModal(onClickData);
+        if (onClickData) openModal({ ...onClickData, onLocalUpdate });
     };
 
     const colors = {

@@ -12,15 +12,13 @@ export default function DashboardWrapper() {
             ...prev,
             [`${payload.type}${payload.id ? `-${payload.id}` : ''}`]: payload,
         }));
-        if (dashboardRef.current && dashboardRef.current.handleLocalUpdate) {
-            dashboardRef.current.handleLocalUpdate(payload);
-        }
     };
 
     return (
         <>
             <DashboardContent
                 ref={dashboardRef}
+                overrides={overrides}    // <-- NEU!
                 onLocalUpdate={handleLocalUpdate}
             />
             <StatModal
