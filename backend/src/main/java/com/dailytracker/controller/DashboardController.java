@@ -1,14 +1,15 @@
+// src/main/java/com/dailytracker/controller/DashboardController.java
 package com.dailytracker.controller;
 
-import com.dailytracker.dto.DashboardInfoResponse;
-import com.dailytracker.dto.MoonDTO;
-import com.dailytracker.dto.WeatherDTO;
+import com.dailytracker.dto.*;
 import com.dailytracker.model.DailyEntry;
 import com.dailytracker.model.User;
 import com.dailytracker.service.DailyEntryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/dashboard")
@@ -20,8 +21,6 @@ public class DashboardController {
     @GetMapping("/info")
     public DashboardInfoResponse getDashboardInfo(@AuthenticationPrincipal User user) {
         DailyEntry entry = dailyEntryService.getOrCreateTodayForUser(user);
-
-        // Saubere gekapselte Lazy-Update-Logik
         dailyEntryService.updateMissingAstroData(entry);
 
         WeatherDTO weather = new WeatherDTO(
@@ -30,13 +29,21 @@ public class DashboardController {
                 entry.getWetterLuftdruck(),
                 getWeatherEmoji(entry.getWetterStatus())
         );
-
         MoonDTO moon = new MoonDTO(
                 entry.getMondphase(),
                 getMoonEmoji(entry.getMondphase())
         );
 
-        return new DashboardInfoResponse(user.getDisplayName(), weather, moon);
+        List<SupplementDashboardDTO> supplements = dailyEntryService.getDashboardSupplementsForUserAndDay(user, entry);
+        List<CustomEntryDashboardDTO> customs = dailyEntryService.getDashboardCustomsForUserAndDay(user, entry);
+
+        return new DashboardInfoResponse(
+                user.getDisplayName(),
+                weather,
+                moon,
+                supplements,
+                customs
+        );
     }
 
     private String getWeatherEmoji(String status) {
