@@ -8,7 +8,7 @@ Ein persönliches Health- und Lifestyle-Tracking-Tool.
 
 | Login | Registrierung | Dashboard | Supplement-Verwaltung |
 |-------|---------------|-----------|-----------------------|
-| ![Login](docs/screenshots/Login.png) | ![Registrierung](docs/screenshots/Register.png) | ![Dashboard](docs/screenshots/Dashboard.png) | ![Supplements](docs/screenshots/Supplements.png) |
+| ![Login](docs/screenshots/login.png) | ![Registrierung](docs/screenshots/register.png) | ![Dashboard](docs/screenshots/dashboard.png) | ![Supplements](docs/screenshots/supplements.png) |
 
 ---
 
