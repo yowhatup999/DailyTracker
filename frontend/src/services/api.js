@@ -104,7 +104,6 @@ export const refreshToken = async () => {
 };
 
 // === DailyEntry ===
-
 export const createDailyEntry = async (data) => {
     const fixedData = { ...data, datum: formatDateToGerman(data.datum) };
     const response = await api.post('/daily', fixedData);
@@ -122,7 +121,6 @@ export const getTodayDailyEntry = async () => {
 };
 
 // === SupplementEntry ===
-
 export const createSupplementEntry = async (dailyEntryId, data) => {
     const fixedData = { ...data, datum: formatDateToGerman(data.datum) };
     const response = await api.post(`/supplements/${dailyEntryId}`, fixedData);
@@ -135,7 +133,6 @@ export const patchSupplementEntry = async (id, data) => {
 };
 
 // === CustomEntry ===
-
 export const createCustomEntry = async (dailyEntryId, data) => {
     const fixedData = { ...data };
     if (data.datum) fixedData.datum = formatDateToGerman(data.datum);
@@ -149,7 +146,6 @@ export const patchCustomEntry = async (id, data) => {
 };
 
 // === SupplementDefinition ===
-
 export const createSupplementDefinition = async (data) => {
     const response = await api.post('/supplement-definition', data);
     return response.data;
@@ -160,8 +156,13 @@ export const getSupplementDefinitions = async () => {
     return response.data;
 };
 
-// === Dashboard Info ===
+// === CustomEntryTemplate ===
+export const createCustomEntryTemplate = async (data) => {
+    const response = await api.post('/custom-template', data);
+    return response.data;
+};
 
+// === Dashboard Info ===
 export const getDashboardInfo = async () => {
     const response = await api.get('/dashboard/info');
     return response.data;

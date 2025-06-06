@@ -1,32 +1,31 @@
 // src/components/DashboardContent.jsx
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
+import React from "react";
 import StatCard from "./StatCard";
-import { getTodayDailyEntry } from "../services/api";
-import buildDashboardCards, { overrideKey } from "./DashboardCards";
+import buildDashboardCards from "./DashboardCards";
 
-const DashboardContent = forwardRef(({ onLocalUpdate, overrides }, ref) => {
-    const [entry, setEntry] = useState(null);
+export default function DashboardContent({ dashboard, overrides, onLocalUpdate }) {
+    if (!dashboard)
+        return <div className="text-center text-zinc-500">Lade Dashboard...</div>;
 
-    const fetchEntry = async () => {
-        try {
-            const response = await getTodayDailyEntry();
-            setEntry(response);
-        } catch (error) {
-            console.error("Fehler beim Laden des DailyEntry:", error);
-        }
+    const entry = {
+        id: dashboard.id,
+        schritte: overrides?.steps?.value ?? dashboard.schritte ?? 0,
+        wasserMl: overrides?.water?.value ?? dashboard.wasserMl ?? 0,
+        supplements: dashboard.supplements?.map(s => ({
+            id: s.entryId ?? s.definitionId,
+            name: s.name,
+            mengeMg: s.mengeMg,
+            genommen: s.genommen,
+        })) ?? [],
+        customEntries: dashboard.customs?.map(c => ({
+            id: c.entryId ?? c.templateId,
+            name: c.name,
+            value: c.value ?? "",
+            unit: c.unit,
+        })) ?? [],
     };
 
-    useEffect(() => {
-        fetchEntry();
-    }, []);
-
-    useImperativeHandle(ref, () => ({
-        refresh: fetchEntry,
-    }));
-
-    if (!entry) return <div className="text-center text-zinc-500">Lade Tagesdaten...</div>;
-
-    const cards = buildDashboardCards(entry, overrides);
+    const cards = buildDashboardCards(entry, overrides ?? {});
 
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
@@ -39,6 +38,4 @@ const DashboardContent = forwardRef(({ onLocalUpdate, overrides }, ref) => {
             ))}
         </div>
     );
-});
-
-export default DashboardContent;
+}

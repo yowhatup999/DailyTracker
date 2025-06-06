@@ -3,8 +3,7 @@ import React, { useRef, useState } from "react";
 import DashboardContent from "../components/DashboardContent";
 import StatModal from "../components/StatModal";
 
-export default function DashboardWrapper() {
-    const dashboardRef = useRef();
+export default function DashboardWrapper({ dashboard, refreshDashboard }) {
     const [overrides, setOverrides] = useState({});
 
     const handleLocalUpdate = (payload) => {
@@ -17,12 +16,12 @@ export default function DashboardWrapper() {
     return (
         <>
             <DashboardContent
-                ref={dashboardRef}
-                overrides={overrides}    // <-- NEU!
+                dashboard={dashboard}
+                overrides={overrides}
                 onLocalUpdate={handleLocalUpdate}
             />
             <StatModal
-                refreshDashboard={() => dashboardRef.current?.refresh()}
+                refreshDashboard={refreshDashboard}
                 onLocalUpdate={handleLocalUpdate}
             />
         </>

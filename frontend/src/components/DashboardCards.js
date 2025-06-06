@@ -8,7 +8,8 @@ export function overrideKey(type, id) {
 export default function buildDashboardCards(entry, overrides) {
     const cards = [];
 
-    const stepsValue = overrides["steps"]?.value ?? entry.schritte;
+    // Schritte
+    const stepsValue = overrides["steps"]?.value ?? entry.schritte ?? 0;
     cards.push({
         title: "Tägliche Schritte",
         value: `${stepsValue} Schritte`,
@@ -17,7 +18,8 @@ export default function buildDashboardCards(entry, overrides) {
         onClickData: { type: "steps", entryId: entry.id, value: stepsValue }
     });
 
-    const waterValue = overrides["water"]?.value ?? entry.wasserMl;
+    // Wasser
+    const waterValue = overrides["water"]?.value ?? entry.wasserMl ?? 0;
     cards.push({
         title: "Wasserzufuhr",
         value: `${waterValue} ml`,
@@ -26,15 +28,16 @@ export default function buildDashboardCards(entry, overrides) {
         onClickData: { type: "water", entryId: entry.id, value: waterValue }
     });
 
-    entry.supplements?.forEach((supp) => {
+    // Supplements
+    (entry.supplements ?? []).forEach((supp) => {
         const key = overrideKey("supplement", supp.id);
         const override = overrides[key];
-        const genommen = override?.genommen ?? supp.genommen;
+        const genommen = override?.genommen ?? supp.genommen ?? false;
         cards.push({
             title: supp.name,
-            value: genommen ? "eingenommen" : "nicht genommen",
+            value: genommen === true ? "eingenommen" : "nicht genommen",
             description: `${supp.mengeMg} mg`,
-            highlight: genommen ? "purple" : "red",
+            highlight: genommen === true ? "purple" : "red",
             onClickData: {
                 type: "supplement",
                 id: supp.id,
@@ -44,10 +47,11 @@ export default function buildDashboardCards(entry, overrides) {
         });
     });
 
-    entry.customEntries?.forEach((custom) => {
+    // Custom Entries
+    (entry.customEntries ?? []).forEach((custom) => {
         const key = overrideKey("custom", custom.id);
         const override = overrides[key];
-        const value = override?.value ?? custom.value;
+        const value = override?.value ?? custom.value ?? "";
         cards.push({
             title: custom.name,
             value: `${value} ${custom.unit || ""}`.trim(),
@@ -63,6 +67,7 @@ export default function buildDashboardCards(entry, overrides) {
         });
     });
 
+    // Add-Card
     cards.push({
         isAddCard: true,
         isEmpty:

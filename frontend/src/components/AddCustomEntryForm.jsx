@@ -1,18 +1,17 @@
 // src/components/AddCustomEntryForm.jsx
 import React, { useState } from "react";
-import { getTodayDailyEntry, createCustomEntry } from "../services/api";
+import { createCustomEntryTemplate } from "../services/api";
 
 export default function AddCustomEntryForm() {
-    const [type, setType] = useState("text"); // text, number, checkbox
     const [form, setForm] = useState({});
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value, type: inputType, checked } = e.target;
+        const { name, value } = e.target;
         setForm((prev) => ({
             ...prev,
-            [name]: inputType === "checkbox" ? checked : value
+            [name]: value
         }));
     };
 
@@ -21,20 +20,15 @@ export default function AddCustomEntryForm() {
         setLoading(true);
         setMessage(null);
         try {
-            const daily = await getTodayDailyEntry();
-            let value = form.value;
-            if (type === "checkbox") value = !!form.value;
-            if (type === "number") value = Number(form.value);
-
-            await createCustomEntry(daily.id, {
+            await createCustomEntryTemplate({
                 name: form.name,
-                value: value.toString(),
                 unit: form.unit || "",
+                enabled: true,
             });
-            setMessage({ text: "Eintrag erfolgreich gespeichert.", type: "success" });
+            setMessage({ text: "Eintrag erfolgreich angelegt.", type: "success" });
             setForm({});
         } catch (err) {
-            setMessage({ text: "Fehler beim Speichern.", type: "error" });
+            setMessage({ text: "Fehler beim Anlegen.", type: "error" });
         }
         setLoading(false);
     };
@@ -52,48 +46,6 @@ export default function AddCustomEntryForm() {
                     className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white"
                     placeholder="z.B. Proteine"
                 />
-            </div>
-            <div>
-                <label className="block text-sm font-medium mb-1">Typ</label>
-                <select
-                    value={type}
-                    onChange={e => { setType(e.target.value); setForm({ ...form, value: "" }); }}
-                    className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white"
-                >
-                    <option value="text">Text</option>
-                    <option value="number">Zahl</option>
-                    <option value="checkbox">Checkbox</option>
-                </select>
-            </div>
-            <div>
-                <label className="block text-sm font-medium mb-1">Wert</label>
-                {type === "text" && (
-                    <input
-                        type="text"
-                        name="value"
-                        value={form.value || ""}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white"
-                    />
-                )}
-                {type === "number" && (
-                    <input
-                        type="number"
-                        name="value"
-                        value={form.value || ""}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white"
-                    />
-                )}
-                {type === "checkbox" && (
-                    <input
-                        type="checkbox"
-                        name="value"
-                        checked={!!form.value}
-                        onChange={handleChange}
-                        className="w-5 h-5 align-middle"
-                    />
-                )}
             </div>
             <div>
                 <label className="block text-sm font-medium mb-1">Einheit</label>
