@@ -1,28 +1,19 @@
 // src/pages/DashboardWrapper.jsx
-import React, { useRef, useState } from "react";
+import React from "react";
 import DashboardContent from "../components/DashboardContent";
 import StatModal from "../components/StatModal";
 
-export default function DashboardWrapper({ dashboard, refreshDashboard }) {
-    const [overrides, setOverrides] = useState({});
-
-    const handleLocalUpdate = (payload) => {
-        setOverrides(prev => ({
-            ...prev,
-            [`${payload.type}${payload.id ? `-${payload.id}` : ''}`]: payload,
-        }));
-    };
-
+export default function DashboardWrapper({ dashboard, overrides, onLocalUpdate, refresh }) {
     return (
         <>
             <DashboardContent
                 dashboard={dashboard}
                 overrides={overrides}
-                onLocalUpdate={handleLocalUpdate}
+                onLocalUpdate={onLocalUpdate}
             />
             <StatModal
-                refreshDashboard={refreshDashboard}
-                onLocalUpdate={handleLocalUpdate}
+                refreshDashboard={refresh}
+                onLocalUpdate={onLocalUpdate}
             />
         </>
     );

@@ -1,6 +1,6 @@
 // src/components/AddCustomEntryForm.jsx
 import React, { useState } from "react";
-import { createCustomEntryTemplate } from "../services/api";
+import { createCustomDefinition } from "../services/api";
 
 export default function AddCustomEntryForm() {
     const [form, setForm] = useState({});
@@ -20,7 +20,7 @@ export default function AddCustomEntryForm() {
         setLoading(true);
         setMessage(null);
         try {
-            await createCustomEntryTemplate({
+            await createCustomDefinition({
                 name: form.name,
                 unit: form.unit || "",
                 enabled: true,

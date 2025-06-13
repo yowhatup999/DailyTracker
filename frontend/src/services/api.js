@@ -156,9 +156,9 @@ export const getSupplementDefinitions = async () => {
     return response.data;
 };
 
-// === CustomEntryTemplate ===
-export const createCustomEntryTemplate = async (data) => {
-    const response = await api.post('/custom-template', data);
+// === CustomDefinition ===
+export const createCustomDefinition = async (data) => {
+    const response = await api.post('/custom-definition', data);
     return response.data;
 };
 

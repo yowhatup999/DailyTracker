@@ -18,7 +18,7 @@ import java.util.*;
 public class DailyEntryService {
 
     private final DailyEntryRepository dailyEntryRepository;
-    private final CustomEntryTemplateRepository customEntryTemplateRepository;
+    private final CustomDefinitionRepository customDefinitionRepository;
     private final SupplementDefinitionRepository supplementDefinitionRepository;
     private final SupplementEntryRepository supplementEntryRepository;
     private final CustomEntryRepository customEntryRepository;
@@ -110,8 +110,8 @@ public class DailyEntryService {
     @Transactional(readOnly = true)
     public List<CustomEntryDashboardDTO> getDashboardCustomsForUserAndDay(User user, DailyEntry today) {
         List<CustomEntryDashboardDTO> result = new ArrayList<>();
-        List<CustomEntryTemplate> templates = customEntryTemplateRepository.findAll().stream()
-                .filter(CustomEntryTemplate::isEnabled).toList();
+        List<CustomDefinition> templates = customDefinitionRepository.findAll().stream()
+                .filter(CustomDefinition::isEnabled).toList();
 
         Map<String, CustomEntry> entryMap = new HashMap<>();
         if (today != null && today.getId() != null) {
@@ -122,7 +122,7 @@ public class DailyEntryService {
             }
         }
 
-        for (CustomEntryTemplate tpl : templates) {
+        for (CustomDefinition tpl : templates) {
             String key = tpl.getName() + "|" + tpl.getUnit();
             CustomEntry entry = entryMap.get(key);
 
@@ -161,6 +161,7 @@ public class DailyEntryService {
             }
         }
 
+        // Neuer Tages-Eintrag wird jetzt erzeugt!
         DailyEntry newEntry = new DailyEntry();
         newEntry.setDatum(today);
         newEntry.setUser(user);
@@ -172,7 +173,36 @@ public class DailyEntryService {
         newEntry.setWetterStatus(null);
         newEntry.setMondphase(null);
 
-        return createWithCustomEntries(newEntry);
+        DailyEntry savedEntry = dailyEntryRepository.save(newEntry);
+
+        List<SupplementDefinition> supplements = supplementDefinitionRepository.findAll().stream()
+                .filter(SupplementDefinition::isEnabled)
+                .toList();
+
+        for (SupplementDefinition def : supplements) {
+            SupplementEntry suppEntry = new SupplementEntry();
+            suppEntry.setName(def.getName());
+            suppEntry.setMengeMg(def.getMengeMg());
+            suppEntry.setGenommen(false);
+            suppEntry.setDatum(today);
+            suppEntry.setDailyEntry(savedEntry);
+            supplementEntryRepository.save(suppEntry);
+        }
+
+        List<CustomDefinition> customs = customDefinitionRepository.findAll().stream()
+                .filter(CustomDefinition::isEnabled)
+                .toList();
+
+        for (CustomDefinition def : customs) {
+            CustomEntry customEntry = new CustomEntry();
+            customEntry.setName(def.getName());
+            customEntry.setUnit(def.getUnit());
+            customEntry.setValue(null);
+            customEntry.setDailyEntry(savedEntry);
+            customEntryRepository.save(customEntry);
+        }
+
+        return savedEntry;
     }
 
     public List<DailyEntry> findByDatum(LocalDate datum) {

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class CustomEntryTemplate {
+public class CustomDefinition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

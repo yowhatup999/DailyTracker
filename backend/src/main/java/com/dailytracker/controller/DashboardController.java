@@ -20,6 +20,7 @@ public class DashboardController {
 
     @GetMapping("/info")
     public DashboardInfoResponse getDashboardInfo(@AuthenticationPrincipal User user) {
+
         DailyEntry entry = dailyEntryService.getOrCreateTodayForUser(user);
         dailyEntryService.updateMissingAstroData(entry);
 
@@ -38,12 +39,16 @@ public class DashboardController {
         List<CustomEntryDashboardDTO> customs = dailyEntryService.getDashboardCustomsForUserAndDay(user, entry);
 
         return new DashboardInfoResponse(
+                entry.getId(),
                 user.getDisplayName(),
+                entry.getSchritte(),
+                entry.getWasserMl(),
                 weather,
                 moon,
                 supplements,
                 customs
         );
+
     }
 
     private String getWeatherEmoji(String status) {

@@ -48,7 +48,7 @@ export default function Dashboard() {
                     moon={dashboard.moon}
                 />
                 <DashboardWrapper
-                    dashboardData={dashboard}
+                    dashboard={dashboard}
                     overrides={overrides}
                     onLocalUpdate={handleLocalUpdate}
                     refresh={fetchDashboard}
