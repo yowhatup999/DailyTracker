@@ -59,7 +59,6 @@ export default function StatEntryModal({ onClose, onCreated }) {
                 />
             )}
             <div className="flex justify-between pt-2">
-                <button onClick={onClose} className="btn-gray">Abbrechen</button>
                 <button onClick={handleSubmit} className="btn-blue">Speichern</button>
             </div>
         </div>

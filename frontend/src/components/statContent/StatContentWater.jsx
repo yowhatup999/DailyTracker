@@ -1,20 +1,18 @@
 // src/components/statContent/StatContentWater.jsx
 import React, { useState } from "react";
 import { patchDailyEntry } from "../../services/api";
-import { useModal } from "../../context/ModalContext";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
 export default function StatContentWater({ data, refresh, onLocalUpdate = () => {} }) {
-    const { closeModal } = useModal();
     const [localWater, setLocalWater] = useState(data.value || 0);
+    const [customValue, setCustomValue] = useState("");
 
     const handleUpdate = (newValue) => {
         setLocalWater(newValue);
         onLocalUpdate({ type: "water", value: newValue });
         patchDailyEntry(data.entryId, { wasserMl: newValue });
         setTimeout(() => {
-            closeModal();
             if (refresh) refresh();
         }, 300);
     };
@@ -22,10 +20,10 @@ export default function StatContentWater({ data, refresh, onLocalUpdate = () => 
     const handleAdd = (amount) => handleUpdate(localWater + amount);
 
     const handleCustomAdd = () => {
-        const input = document.getElementById("water-input").value;
-        const value = parseInt(input);
+        const value = parseInt(customValue);
         if (isNaN(value)) return alert("Ungültige Eingabe");
         handleUpdate(localWater + value);
+        setCustomValue(""); // Reset input
     };
 
     return (
@@ -38,11 +36,14 @@ export default function StatContentWater({ data, refresh, onLocalUpdate = () => 
                 <AddButton onClick={() => handleAdd(1000)} className="btn-blue">+1000ml</AddButton>
             </div>
             <div className="flex gap-2">
-                <InputField id="water-input" type="number" placeholder="Eigene Zahl" className="input" />
+                <InputField
+                    type="number"
+                    placeholder="Eigene Zahl"
+                    value={customValue}
+                    onChange={e => setCustomValue(e.target.value)}
+                    className="input"
+                />
                 <AddButton onClick={handleCustomAdd} className="btn-blue">Hinzufügen</AddButton>
-            </div>
-            <div className="text-right">
-                <AddButton onClick={closeModal}>Schließen</AddButton>
             </div>
         </div>
     );

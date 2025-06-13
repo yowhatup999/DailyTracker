@@ -48,7 +48,7 @@ export default function StatModal({ refreshDashboard, onLocalUpdate }) {
                 <AnimatedBorder>
                     <div className="glow-inner p-6 space-y-6 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg">
                         {renderContent()}
-                        <div className="text-right">
+                        <div className="mt-8 text-right">
                             <button
                                 onClick={closeModal}
                                 className="text-zinc-500 hover:text-zinc-800 dark:hover:text-white transition"

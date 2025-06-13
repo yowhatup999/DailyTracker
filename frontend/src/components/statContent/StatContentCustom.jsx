@@ -1,12 +1,10 @@
 // src/components/statContent/StatContentCustom.jsx
 import React, { useState } from "react";
 import { patchCustomEntry } from "../../services/api";
-import { useModal } from "../../context/ModalContext";
-import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
+import AddButton from "../ui/AddButton";
 
 export default function StatContentCustom({ data, refresh, onLocalUpdate = () => {} }) {
-    const { closeModal } = useModal();
     const [value, setValue] = useState(data.value || "");
 
     const handleSave = async () => {
@@ -14,7 +12,6 @@ export default function StatContentCustom({ data, refresh, onLocalUpdate = () =>
         onLocalUpdate({ type: "custom", id: data.id, name: data.name, value, unit: data.unit });
         patchCustomEntry(data.id, { value });
         setTimeout(() => {
-            closeModal();
             if (refresh) refresh();
         }, 300);
     };
@@ -29,12 +26,9 @@ export default function StatContentCustom({ data, refresh, onLocalUpdate = () =>
                 placeholder={`Wert eingeben (${data.unit || "z. B. mg"})`}
                 className="input"
             />
-            <div className="flex justify-between">
+            <div className="flex justify-end">
                 <AddButton onClick={handleSave} className="btn-blue">
                     Speichern
-                </AddButton>
-                <AddButton onClick={closeModal} className="btn-gray">
-                    Schließen
                 </AddButton>
             </div>
         </div>
