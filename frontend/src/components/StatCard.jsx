@@ -2,9 +2,16 @@
 import React from "react";
 import { useModal } from "../context/ModalContext";
 
-export default function StatCard({ title, value, description, highlight, onClickData, onCardClick, onLocalUpdate }) {
+export default function StatCard({
+                                     title,
+                                     value,
+                                     description,
+                                     highlight,
+                                     onClickData,
+                                     onCardClick,
+                                     onLocalUpdate
+                                 }) {
     const { openModal } = useModal();
-
     const isAddCard = onClickData?.type === "create-entry";
 
     const handleClick = () => {
@@ -21,22 +28,26 @@ export default function StatCard({ title, value, description, highlight, onClick
 
     return (
         <div
-            className={`rounded-2xl p-6 transition-all duration-200 cursor-pointer 
+            className="stat-card-outer cursor-pointer"
+            onClick={handleClick}
+        >
+            <div className={`stat-card-inner rounded-2xl p-6 transition-all duration-200
                 ${isAddCard
                 ? "bg-white/80 shadow-md hover:shadow-lg hover:scale-105 relative"
                 : "shadow-soft dark:shadow-glow bg-card-light dark:bg-card-dark hover:scale-[1.02]"
             }`}
-            onClick={handleClick}
-        >
-            {isAddCard ? (
-                <span className="absolute bottom-2 left-3 text-gray-400 text-2xl">+</span>
-            ) : (
-                <>
-                    <h2 className="text-xl font-semibold">{title}</h2>
-                    <p className="text-lg font-medium">{value}</p>
-                    <p className={`text-sm ${colors[highlight]}`}>{description}</p>
-                </>
-            )}
+                 style={{ position: "relative", zIndex: 1 }}
+            >
+                {isAddCard ? (
+                    <span className="absolute bottom-2 left-3 text-gray-400 text-2xl">+</span>
+                ) : (
+                    <>
+                        <h2 className="text-xl font-semibold">{title}</h2>
+                        <p className="text-lg font-medium">{value}</p>
+                        <p className={`text-sm ${colors[highlight]}`}>{description}</p>
+                    </>
+                )}
+            </div>
         </div>
     );
 }
