@@ -18,4 +18,8 @@ public class SupplementDefinition {
     private int mengeMg;
 
     private boolean enabled;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

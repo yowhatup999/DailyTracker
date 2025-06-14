@@ -80,8 +80,10 @@ public class DailyEntryService {
     @Transactional(readOnly = true)
     public List<SupplementDashboardDTO> getDashboardSupplementsForUserAndDay(User user, DailyEntry today) {
         List<SupplementDashboardDTO> result = new ArrayList<>();
-        List<SupplementDefinition> defs = supplementDefinitionRepository.findAll().stream()
-                .filter(SupplementDefinition::isEnabled).toList();
+        List<SupplementDefinition> defs = supplementDefinitionRepository.findByUser(user)
+                .stream()
+                .filter(SupplementDefinition::isEnabled)
+                .toList();
 
         Map<String, SupplementEntry> entryMap = new HashMap<>();
         if (today != null && today.getId() != null) {
@@ -110,8 +112,10 @@ public class DailyEntryService {
     @Transactional(readOnly = true)
     public List<CustomEntryDashboardDTO> getDashboardCustomsForUserAndDay(User user, DailyEntry today) {
         List<CustomEntryDashboardDTO> result = new ArrayList<>();
-        List<CustomDefinition> templates = customDefinitionRepository.findAll().stream()
-                .filter(CustomDefinition::isEnabled).toList();
+        List<CustomDefinition> templates = customDefinitionRepository.findByUser(user)
+                .stream()
+                .filter(CustomDefinition::isEnabled)
+                .toList();
 
         Map<String, CustomEntry> entryMap = new HashMap<>();
         if (today != null && today.getId() != null) {

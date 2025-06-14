@@ -1,5 +1,6 @@
 package com.dailytracker.controller;
 
+import org.springframework.http.ResponseEntity;
 import com.dailytracker.model.CustomDefinition;
 import com.dailytracker.model.CustomEntry;
 import com.dailytracker.model.DailyEntry;
@@ -9,7 +10,7 @@ import com.dailytracker.repository.CustomEntryRepository;
 import com.dailytracker.repository.DailyEntryRepository;
 import com.dailytracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -26,17 +27,14 @@ public class CustomDefinitionController {
     private final UserRepository userRepository;
 
     @GetMapping
-    public List<CustomDefinition> getAll() {
-        return repo.findAll();
+    public List<CustomDefinition> getAll(@AuthenticationPrincipal User user) {
+        return repo.findByUser(user);
     }
 
     @PostMapping
-    public CustomDefinition create(@RequestBody CustomDefinition definition) {
+    public CustomDefinition create(@AuthenticationPrincipal User user, @RequestBody CustomDefinition definition) {
+        definition.setUser(user);
         CustomDefinition savedDef = repo.save(definition);
-
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         LocalDate today = LocalDate.now();
         DailyEntry dailyEntry = dailyEntryRepository.findByDatum(today)
@@ -58,7 +56,13 @@ public class CustomDefinitionController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+    public ResponseEntity<Object> delete(@AuthenticationPrincipal User user, @PathVariable Long id) {
+        return repo.findById(id)
+                .filter(def -> def.getUser() != null && def.getUser().getId().equals(user.getId()))
+                .map(existing -> {
+                    repo.deleteById(id);
+                    return ResponseEntity.noContent().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

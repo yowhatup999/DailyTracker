@@ -18,4 +18,8 @@ public class CustomDefinition {
     private String unit;
 
     private boolean enabled;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

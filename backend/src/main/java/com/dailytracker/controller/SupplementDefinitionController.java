@@ -10,7 +10,7 @@ import com.dailytracker.repository.DailyEntryRepository;
 import com.dailytracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -27,16 +27,14 @@ public class SupplementDefinitionController {
     private final UserRepository userRepository;
 
     @GetMapping
-    public List<SupplementDefinition> getAll() {
-        return repository.findAll();
+    public List<SupplementDefinition> getAll(@AuthenticationPrincipal User user) {
+        return repository.findByUser(user);
     }
 
     @PostMapping
-    public SupplementDefinition create(@RequestBody SupplementDefinition def) {
+    public SupplementDefinition create(@AuthenticationPrincipal User user, @RequestBody SupplementDefinition def) {
+        def.setUser(user);
         SupplementDefinition savedDef = repository.save(def);
-
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
 
         LocalDate today = LocalDate.now();
         DailyEntry dailyEntry = dailyEntryRepository.findByDatum(today)
@@ -59,8 +57,12 @@ public class SupplementDefinitionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SupplementDefinition> update(@PathVariable Long id, @RequestBody SupplementDefinition updated) {
+    public ResponseEntity<SupplementDefinition> update(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long id,
+            @RequestBody SupplementDefinition updated) {
         return repository.findById(id)
+                .filter(def -> def.getUser().getId().equals(user.getId()))
                 .map(existing -> {
                     existing.setName(updated.getName());
                     existing.setMengeMg(updated.getMengeMg());
@@ -71,8 +73,13 @@ public class SupplementDefinitionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Object> delete(@AuthenticationPrincipal User user, @PathVariable Long id) {
+        return repository.findById(id)
+                .filter(def -> def.getUser().getId().equals(user.getId()))
+                .map(existing -> {
+                    repository.deleteById(id);
+                    return ResponseEntity.noContent().build();
+                })
+                .orElse(ResponseEntity.<Void>notFound().build());
     }
 }
