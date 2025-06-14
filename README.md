@@ -21,6 +21,7 @@ Mit DailyTracker können Nutzer ihre täglichen Gesundheitsdaten einfach erfasse
 - Wasserzufuhr
 - Supplemente (mit mg-Angabe)
 - Trainingseinheiten
+- Custom Einträge
 
 Zusätzlich werden Wetterdaten und die aktuelle Mondphase automatisch geladen (z. B. für bessere Auswertung der Schlafqualität).
 
@@ -28,16 +29,16 @@ Zusätzlich werden Wetterdaten und die aktuelle Mondphase automatisch geladen (z
 
 ## Tech-Stack
 
-- **Backend:** Java mit Spring Boot  
-- **Datenbank:** PostgreSQL  
-- **API-Integration:** Wetter (OpenWeather), Mondphase  
-- **Frontend:** React (mobilfähig, folgt später)
+- **Backend:** Java 21 mit Spring Boot  
+- **Frontend:** React (Vite)
+- **Datenbank:** PostgreSQL
+- **API-Integration:** Open-Meteo (Wetter), Mondphase
 
 ---
 
 ## Features
 
-- Benutzer-Login
+- Benutzer-Login (JWT-Auth)
 - Tagesübersicht mit schnellen Eingaben
 - Automatischer Wetter- und Mondimport
 - Supplement-Verwaltung mit mg-Angabe
@@ -49,14 +50,18 @@ Zusätzlich werden Wetterdaten und die aktuelle Mondphase automatisch geladen (z
 
 ## Status
 
-🚀 **Fast bereit für das erste Release.**  
-Frontend und Backend laufen, Basis-Features sind nutzbar. Einzelne Feinschliffe fehlen noch.
+🚀 **Release-Ready**  
+Frontend und Backend laufen containerisiert mit Docker.  
+Alle Basis-Features funktionieren, Feinschliff/UX folgt laufend.
 
 ---
 
-## Installation
+## Installation (lokal, mit Docker Compose)
 
-**Backend starten:**
+**Voraussetzungen:**  
+- Docker & Docker Compose installiert
+
+**Start:**
 ```bash
-cd backend
-./mvnw spring-boot:run
+cd infra
+docker-compose up --build
