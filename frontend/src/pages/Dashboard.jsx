@@ -6,6 +6,7 @@ import TopBar from "../components/TopBar";
 import DashboardWrapper from "./DashboardWrapper";
 import { getDashboardInfo } from "../services/api";
 
+
 export default function Dashboard() {
     const isReady = useAuth();
     const [dashboard, setDashboard] = useState(null);
@@ -40,20 +41,22 @@ export default function Dashboard() {
     if (!isReady || !dashboard) return null;
 
     return (
-        <AnimatedBorder>
-            <div className="w-full p-6 sm:p-10 space-y-10">
-                <TopBar
-                    name={dashboard.username}
-                    weather={dashboard.weather}
-                    moon={dashboard.moon}
-                />
-                <DashboardWrapper
-                    dashboard={dashboard}
-                    overrides={overrides}
-                    onLocalUpdate={handleLocalUpdate}
-                    refresh={fetchDashboard}
-                />
-            </div>
-        </AnimatedBorder>
+        <>
+            <AnimatedBorder>
+                <div className="w-full p-6 sm:p-10 space-y-10">
+                    <TopBar
+                        name={dashboard.username}
+                        weather={dashboard.weather}
+                        moon={dashboard.moon}
+                    />
+                    <DashboardWrapper
+                        dashboard={dashboard}
+                        overrides={overrides}
+                        onLocalUpdate={handleLocalUpdate}
+                        refresh={fetchDashboard}
+                    />
+                </div>
+            </AnimatedBorder>
+        </>
     );
 }

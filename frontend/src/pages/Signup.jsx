@@ -1,3 +1,4 @@
+// src/pages/Signup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AnimatedBorder from "../components/AnimatedBorder";
@@ -14,7 +15,6 @@ export default function Signup() {
         try {
             await registerUser(email, password);
             setMessage({ text: "Registrierung erfolgreich!", type: "success" });
-
             setTimeout(() => {
                 navigate("/login");
             }, 1000);
@@ -24,54 +24,51 @@ export default function Signup() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-brand-light dark:bg-brand-dark p-4">
-            <div className="w-full max-w-sm">
+        <div className="flex-1 flex items-center justify-center bg-brand-light dark:bg-brand-dark px-4">
+            <div className="w-full max-w-4xl">
                 <AnimatedBorder>
-                    <div className="glow-inner p-8 space-y-8 text-center">
-                        <h1 className="text-4xl font-bold tracking-tight">Registrieren</h1>
-
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="text-left space-y-2">
-                                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">E-Mail</label>
-                                <input
-                                    type="email"
-                                    className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="example@gmail.com"
-                                />
-                            </div>
-
-                            <div className="text-left space-y-2">
-                                <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Passwort</label>
-                                <input
-                                    type="password"
-                                    className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="********"
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full bg-blue-600 hover:bg-blue-700 transition px-4 py-3 rounded-lg font-semibold text-white"
-                            >
-                                Registrieren
-                            </button>
-
-                            {message && (
-                                <div className={`mt-4 text-sm font-medium ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
-                                    {message.text}
+                    <div className="glow-inner px-20 py-12 space-y-8 text-center">
+                        <h1 className="text-4xl font-bold tracking-tight mb-2">Registrieren</h1>
+                        <div className="mx-auto max-w-xl">
+                            <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6 text-left">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">E-Mail</label>
+                                    <input
+                                        type="email"
+                                        className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-base text-black dark:text-white"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="example@gmail.com"
+                                    />
                                 </div>
-                            )}
-                        </form>
-
-                        <div className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
-                            Schon registriert?{" "}
-                            <a href="/login" className="text-blue-500 hover:underline font-semibold">
-                                Jetzt einloggen
-                            </a>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">Passwort</label>
+                                    <input
+                                        type="password"
+                                        className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-base text-black dark:text-white"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="********"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-lg font-semibold text-white"
+                                >
+                                    Registrieren
+                                </button>
+                                {message && (
+                                    <div className={`mt-3 text-sm font-medium ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                                        {message.text}
+                                    </div>
+                                )}
+                            </form>
+                            <div className="pt-3 text-center text-sm text-zinc-600 dark:text-zinc-400">
+                                Schon registriert?{" "}
+                                <a href="/login" className="text-blue-500 hover:underline font-semibold">
+                                    Jetzt einloggen
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </AnimatedBorder>
