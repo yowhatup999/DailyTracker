@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AnimatedBorder from "../components/AnimatedBorder";
 import { loginUser } from "../services/api";
+import { useUser } from "../hooks/UserContext"; // <- NEU!
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState(null);
     const navigate = useNavigate();
+    const { dispatch } = useUser(); // <- NEU!
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ export default function Login() {
             localStorage.setItem("dailytracker_token", accessToken);
             localStorage.setItem("dailytracker_refresh", refreshToken);
             localStorage.setItem("dailytracker_username", username || email.split("@")[0]);
+            dispatch({ type: "LOGIN" });
             setMessage({ text: 'Login erfolgreich!', type: 'success' });
             navigate("/dashboard");
         } catch (error) {

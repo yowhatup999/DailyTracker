@@ -1,9 +1,10 @@
-import { createContext, useContext, useReducer } from "react";
+// src/hooks/UserContext.jsx
+import React, { createContext, useContext, useReducer } from "react";
 
 const UserContext = createContext();
 
 const initialState = {
-    isLoggedIn: true,
+    isLoggedIn: !!localStorage.getItem("dailytracker_token"),
 };
 
 function userReducer(state, action) {

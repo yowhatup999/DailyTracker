@@ -4,7 +4,7 @@ import { useOutletContext } from "react-router-dom";
 import AnimatedBorder from "../components/AnimatedBorder";
 
 export default function Settings() {
-    const { theme, setTheme } = useOutletContext();
+    const { theme, setTheme } = useOutletContext() || {};
 
     return (
         <div className="flex justify-center pt-20 pb-10 min-h-screen px-4">

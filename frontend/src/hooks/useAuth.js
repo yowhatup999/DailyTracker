@@ -1,19 +1,15 @@
 // src/hooks/useAuth.js
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function useAuth() {
-    const navigate = useNavigate();
-    const [checked, setChecked] = useState(false);
+    const [isReady, setIsReady] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("dailytracker_token");
-        if (!token) {
-            navigate("/login");
-        } else {
-            setChecked(true);
-        }
-    }, [navigate]);
+        setIsLoggedIn(!!token);
+        setIsReady(true);
+    }, []);
 
-    return checked;
+    return { isReady, isLoggedIn };
 }

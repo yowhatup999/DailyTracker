@@ -1,12 +1,11 @@
+// src/features/auth/RequireAuth.jsx
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useUser } from "../../hooks/UserContext.jsx";
 
 export default function RequireAuth() {
-    const { state } = useUser();
-
-    if (!state.isLoggedIn) {
+    const token = localStorage.getItem("dailytracker_token");
+    if (!token) {
         return <Navigate to="/login" replace />;
     }
-
     return <Outlet />;
 }

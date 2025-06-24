@@ -4,17 +4,19 @@ import { patchDailyEntry } from "../../services/api";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
-export default function StatContentSteps({ data, refresh, onLocalUpdate = () => {} }) {
+export default function StatContentSteps({ data, refresh, onLocalUpdate = () => {}, isDemo }) {
     const [localSteps, setLocalSteps] = useState(data.value || 0);
     const [customValue, setCustomValue] = useState("");
 
     const handleUpdate = (newValue) => {
         setLocalSteps(newValue);
         onLocalUpdate({ type: "steps", value: newValue });
-        patchDailyEntry(data.entryId, { schritte: newValue });
-        setTimeout(() => {
-            if (refresh) refresh();
-        }, 300);
+        if (!isDemo) {
+            patchDailyEntry(data.entryId, { schritte: newValue });
+            setTimeout(() => {
+                if (refresh) refresh();
+            }, 300);
+        }
     };
 
     const handleAdd = (amount) => handleUpdate(localSteps + amount);
@@ -23,7 +25,7 @@ export default function StatContentSteps({ data, refresh, onLocalUpdate = () => 
         const value = parseInt(customValue);
         if (isNaN(value)) return alert("Ungültige Eingabe");
         handleUpdate(localSteps + value);
-        setCustomValue(""); // Reset input
+        setCustomValue("");
     };
 
     return (

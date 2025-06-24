@@ -4,11 +4,13 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Settings, Menu, X } from "lucide-react";
 import AccountDropdown from "../components/AccountDropdown";
 import StatModal from "../components/StatModal";
+import { useUser } from "../hooks/UserContext";
 
 export default function SidebarLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "system");
     const navigate = useNavigate();
+    const { state } = useUser();
 
     useEffect(() => {
         const applyTheme = () => {
@@ -43,6 +45,16 @@ export default function SidebarLayout() {
     const handleClickTitle = () => {
         navigate("/");
         if (window.innerWidth < 1024) setSidebarOpen(false);
+    };
+
+    const handleProtectedNav = (e, target) => {
+        if (!state.isLoggedIn) {
+            e.preventDefault();
+            navigate("/login");
+        } else {
+            navigate(target);
+        }
+        setSidebarOpen(false);
     };
 
     return (
@@ -90,29 +102,24 @@ export default function SidebarLayout() {
                         Dashboard
                     </NavLink>
 
-                    <NavLink to="/add-entry" className={({ isActive }) =>
-                        `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
-                            isActive
-                                ? "bg-blue-500 text-white scale-105"
-                                : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
-                        }`
-                    }>
+                    <a
+                        href="/add-entry"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
+                        onClick={e => handleProtectedNav(e, "/add-entry")}
+                    >
                         <span className="w-4 h-4">➕</span>
                         Neuer Eintrag
-                    </NavLink>
+                    </a>
 
-                    <NavLink to="/settings" className={({ isActive }) =>
-                        `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
-                            isActive
-                                ? "bg-blue-500 text-white scale-105"
-                                : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
-                        }`
-                    }>
+                    <a
+                        href="/settings"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-105 text-zinc-700 dark:text-zinc-200"
+                        onClick={e => handleProtectedNav(e, "/settings")}
+                    >
                         <Settings className="w-4 h-4" />
                         Einstellungen
-                    </NavLink>
+                    </a>
                 </nav>
-
             </aside>
 
             <main className="flex-1 flex flex-col min-h-screen overflow-y-auto p-6 lg:p-10 relative z-0">

@@ -4,17 +4,19 @@ import { patchDailyEntry } from "../../services/api";
 import AddButton from "../ui/AddButton";
 import InputField from "../ui/InputField";
 
-export default function StatContentWater({ data, refresh, onLocalUpdate = () => {} }) {
+export default function StatContentWater({ data, refresh, onLocalUpdate = () => {}, isDemo }) {
     const [localWater, setLocalWater] = useState(data.value || 0);
     const [customValue, setCustomValue] = useState("");
 
     const handleUpdate = (newValue) => {
         setLocalWater(newValue);
         onLocalUpdate({ type: "water", value: newValue });
-        patchDailyEntry(data.entryId, { wasserMl: newValue });
-        setTimeout(() => {
-            if (refresh) refresh();
-        }, 300);
+        if (!isDemo) {
+            patchDailyEntry(data.entryId, { wasserMl: newValue });
+            setTimeout(() => {
+                if (refresh) refresh();
+            }, 300);
+        }
     };
 
     const handleAdd = (amount) => handleUpdate(localWater + amount);
@@ -23,7 +25,7 @@ export default function StatContentWater({ data, refresh, onLocalUpdate = () => 
         const value = parseInt(customValue);
         if (isNaN(value)) return alert("Ungültige Eingabe");
         handleUpdate(localWater + value);
-        setCustomValue(""); // Reset input
+        setCustomValue("");
     };
 
     return (
