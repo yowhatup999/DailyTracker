@@ -21,7 +21,6 @@ export default function Profile() {
                     <div className="glow-inner p-8 space-y-6 text-center">
                         <h1 className="text-3xl font-bold tracking-tight mb-6">Profil</h1>
 
-                        {/* Nutzerinfo Anzeige */}
                         <div className="space-y-4">
                             <input
                                 type="text"

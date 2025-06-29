@@ -73,22 +73,24 @@ export default function Dashboard() {
     );
 
     return (
-        <AnimatedBorder>
-            <div className="w-full p-6 sm:p-10 space-y-10">
-                {isDemo && DemoBanner}
-                <TopBar
-                    name={dashboard.username}
-                    weather={dashboard.weather}
-                    moon={dashboard.moon}
-                />
-                <DashboardWrapper
-                    dashboard={dashboard}
-                    overrides={overrides}
-                    onLocalUpdate={handleLocalUpdate}
-                    refresh={isDemo ? () => {} : undefined}
-                    isDemo={isDemo}
-                />
-            </div>
-        </AnimatedBorder>
+        <div className="mt-28">
+            <AnimatedBorder className="max-w-5xl mx-auto">
+                <div className="p-6 sm:p-10 space-y-10">
+                    {isDemo && DemoBanner}
+                    <TopBar
+                        name={dashboard.username}
+                        weather={dashboard.weather}
+                        moon={dashboard.moon}
+                    />
+                    <DashboardWrapper
+                        dashboard={dashboard}
+                        overrides={overrides}
+                        onLocalUpdate={handleLocalUpdate}
+                        refresh={isDemo ? () => {} : undefined}
+                        isDemo={isDemo}
+                    />
+                </div>
+            </AnimatedBorder>
+        </div>
     );
 }

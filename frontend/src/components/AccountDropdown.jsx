@@ -2,14 +2,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const colors = ["bg-blue-500", "bg-green-500", "bg-purple-500", "bg-red-500", "bg-pink-500"];
+const colors = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-purple-500",
+    "bg-red-500",
+    "bg-pink-500"
+];
 
 export default function AccountDropdown() {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [colorClass, setColorClass] = useState("");
 
-    const initials = "A"; // Dummy für jetzt
+    // Username oder Email holen, Fallback "A"
+    const username =
+        localStorage.getItem("dailytracker_username") ||
+        localStorage.getItem("dailytracker_email") ||
+        "A";
+
+    // Initialen generieren (ersten Buchstaben, 2 max)
+    const initials = username
+        .split(" ")
+        .map((s) => s[0])
+        .join("")
+        .toUpperCase()
+        .substring(0, 2);
 
     useEffect(() => {
         let stored = localStorage.getItem("avatarColor");
@@ -30,11 +48,20 @@ export default function AccountDropdown() {
         setOpen(false);
     };
 
+    // Klick außerhalb schließt Dropdown
+    useEffect(() => {
+        if (!open) return;
+        const onClick = () => setOpen(false);
+        window.addEventListener("click", onClick);
+        return () => window.removeEventListener("click", onClick);
+    }, [open]);
+
     return (
-        <div className="relative z-[999]">
+        <div className="relative z-[999]" onClick={e => e.stopPropagation()}>
             <button
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpen((v) => !v)}
                 className={`w-10 h-10 rounded-full flex items-center justify-center ${colorClass} text-white font-bold hover:scale-105 transition`}
+                title="Profil"
             >
                 {initials}
             </button>
