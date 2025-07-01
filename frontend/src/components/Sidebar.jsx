@@ -1,11 +1,11 @@
 // src/components/Sidebar.jsx
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, X } from "lucide-react";
 import { useUser } from "../hooks/UserContext";
 import AddButton from "./ui/AddButton";
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen = false, setMobileOpen = () => {} }) {
     const navigate = useNavigate();
     const { state, dispatch } = useUser();
 
@@ -15,6 +15,7 @@ export default function Sidebar() {
             navigate("/login");
         } else {
             navigate(target);
+            setMobileOpen(false);
         }
     };
 
@@ -22,13 +23,30 @@ export default function Sidebar() {
         dispatch({ type: "LOGOUT" });
         localStorage.clear();
         navigate("/login");
+        setMobileOpen(false);
     };
+    const sidebarClasses = `
+    h-screen w-64 flex flex-col bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 shadow-lg p-4 transition-all duration-300 z-40
+    fixed top-0 left-0
+    ${mobileOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"}
+    md:static md:translate-x-0 md:opacity-100 md:flex
+`;
 
     return (
-        <aside className="h-screen w-64 flex flex-col bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 shadow-lg p-4 transition-colors">
+        <aside className={sidebarClasses}>
+            <button
+                className="md:hidden absolute top-3 right-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Schließen"
+            >
+                <X className="w-6 h-6" />
+            </button>
             <h1
                 className="font-bold text-2xl cursor-pointer hover:text-blue-600 transition mb-8 text-zinc-900 dark:text-white"
-                onClick={() => navigate("/")}
+                onClick={() => {
+                    navigate("/");
+                    setMobileOpen(false);
+                }}
             >
                 DailyTracker
             </h1>
@@ -39,7 +57,9 @@ export default function Sidebar() {
                             ? "bg-blue-500 text-white shadow-md"
                             : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:shadow text-zinc-900 dark:text-white"
                     }`
-                }>
+                }
+                         onClick={() => setMobileOpen(false)}
+                >
                     <LayoutDashboard className="w-5 h-5" />
                     Dashboard
                 </NavLink>
