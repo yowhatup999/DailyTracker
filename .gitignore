@@ -1,0 +1,13 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Build & Maven
+target/
+*.class
+
+# OS / System
+.DS_Store
+
+# Word-Dokumente
+*.docx
