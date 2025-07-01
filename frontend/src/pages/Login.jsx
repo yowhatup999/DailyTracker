@@ -34,44 +34,46 @@ export default function Login() {
                 <AnimatedBorder>
                     <div className="glow-inner px-20 py-12 space-y-8 text-center">
                         <h1 className="text-4xl font-bold tracking-tight mb-2">DailyTracker</h1>
-                        <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6 text-left">
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">E-Mail</label>
-                                <input
-                                    type="email"
-                                    className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-base text-black dark:text-white"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="example@gmail.com"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">Passwort</label>
-                                <input
-                                    type="password"
-                                    className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-base text-black dark:text-white"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="********"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-lg font-semibold text-white"
-                            >
-                                Einloggen
-                            </button>
-                            {message && (
-                                <div className={`mt-3 text-sm font-medium ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
-                                    {message.text}
+                        <div className="mx-auto max-w-xl">
+                            <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6 text-left">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">E-Mail</label>
+                                    <input
+                                        type="email"
+                                        className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-base text-black dark:text-white"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="example@gmail.com"
+                                    />
                                 </div>
-                            )}
-                        </form>
-                        <div className="pt-3 text-center text-sm text-zinc-600 dark:text-zinc-400">
-                            Noch keinen Account?{" "}
-                            <a href="/signup" className="text-blue-500 hover:underline font-semibold">
-                                Registrieren
-                            </a>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">Passwort</label>
+                                    <input
+                                        type="password"
+                                        className="w-full px-4 py-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-base text-black dark:text-white"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="********"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-lg font-semibold text-white"
+                                >
+                                    Einloggen
+                                </button>
+                                {message && (
+                                    <div className={`mt-3 text-sm font-medium ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                                        {message.text}
+                                    </div>
+                                )}
+                            </form>
+                            <div className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
+                                Noch keinen Account?{" "}
+                                <a href="/signup" className="text-blue-500 hover:underline font-semibold">
+                                    Registrieren
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </AnimatedBorder>

@@ -3,6 +3,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Settings, LogOut } from "lucide-react";
 import { useUser } from "../hooks/UserContext";
+import AddButton from "./ui/AddButton";
 
 export default function Sidebar() {
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function Sidebar() {
             </h1>
             <nav className="flex-1 flex flex-col gap-3 text-base font-medium">
                 <NavLink to="/dashboard" className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 ${
+                    `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                         isActive
                             ? "bg-blue-500 text-white shadow-md"
                             : "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:shadow text-zinc-900 dark:text-white"
@@ -44,7 +45,7 @@ export default function Sidebar() {
                 </NavLink>
                 <a
                     href="/add-entry"
-                    className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:shadow text-zinc-900 dark:text-white"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:shadow text-zinc-900 dark:text-white"
                     onClick={e => handleProtectedNav(e, "/add-entry")}
                 >
                     <span className="w-5 h-5">➕</span>
@@ -52,7 +53,7 @@ export default function Sidebar() {
                 </a>
                 <a
                     href="/settings"
-                    className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:shadow text-zinc-900 dark:text-white"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:shadow text-zinc-900 dark:text-white"
                     onClick={e => handleProtectedNav(e, "/settings")}
                 >
                     <Settings className="w-5 h-5" />
@@ -61,7 +62,7 @@ export default function Sidebar() {
             </nav>
             <button
                 onClick={handleSignOut}
-                className="flex items-center gap-3 mt-10 px-4 py-3 rounded-2xl bg-zinc-100/70 dark:bg-zinc-800/70 hover:bg-red-500 hover:text-white dark:hover:bg-red-500 dark:hover:text-white text-zinc-900 dark:text-white font-semibold transition shadow"
+                className="flex items-center gap-3 mt-10 px-4 py-3 rounded-xl bg-zinc-100/70 dark:bg-zinc-800/70 hover:bg-red-500 hover:text-white dark:hover:bg-red-500 dark:hover:text-white text-zinc-900 dark:text-white font-semibold transition shadow"
             >
                 <LogOut className="w-5 h-5" />
                 Signout

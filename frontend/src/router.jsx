@@ -13,11 +13,25 @@ import Logout from './pages/Logout';
 import RootRedirect from './pages/RootRedirect';
 import RequireAuth from "./features/auth/RequireAuth";
 import AddEntry from "./pages/AddEntry.jsx";
+import AuthLayout from './layouts/AuthLayout';
 
 const router = createBrowserRouter([
-    { path: '/login', element: <Login /> },
-    { path: '/signup', element: <Signup /> },
-
+    {
+        path: '/login',
+        element: (
+            <AuthLayout>
+                <Login />
+            </AuthLayout>
+        ),
+    },
+    {
+        path: '/signup',
+        element: (
+            <AuthLayout>
+                <Signup />
+            </AuthLayout>
+        ),
+    },
     {
         element: <AppLayout />,
         children: [

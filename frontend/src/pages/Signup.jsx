@@ -63,7 +63,7 @@ export default function Signup() {
                                     </div>
                                 )}
                             </form>
-                            <div className="pt-3 text-center text-sm text-zinc-600 dark:text-zinc-400">
+                            <div className="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
                                 Schon registriert?{" "}
                                 <a href="/login" className="text-blue-500 hover:underline font-semibold">
                                     Jetzt einloggen
