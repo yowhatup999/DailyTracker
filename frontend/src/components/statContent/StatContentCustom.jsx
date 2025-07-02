@@ -1,8 +1,8 @@
 // src/components/statContent/StatContentCustom.jsx
 import React, { useState } from "react";
-import { patchCustomEntry } from "../../services/api";
-import InputField from "../ui/InputField";
-import AddButton from "../ui/AddButton";
+import { patchCustomEntry } from "../../services/api.js";
+import InputField from "../ui/InputField.jsx";
+import AddButton from "../ui/AddButton.jsx";
 
 export default function StatContentCustom({ data, refresh, onLocalUpdate = () => {} }) {
     const [value, setValue] = useState(data.value || "");

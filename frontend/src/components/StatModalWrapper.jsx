@@ -1,6 +1,6 @@
 // src/components/StatModalWrapper.jsx
 import React from "react";
-import AnimatedBorder from "./AnimatedBorder";
+import AnimatedBorder from "./AnimatedBorder.jsx";
 
 export default function StatModalWrapper({ children, onClose }) {
     const handleBackdropClick = (e) => {

@@ -1,6 +1,6 @@
 // src/components/statContent/StatContentSupplement.jsx
 import React, { useState } from "react";
-import { patchSupplementEntry } from "../../services/api";
+import { patchSupplementEntry } from "../../services/api.js";
 
 export default function StatContentSupplement({ data, refresh, onLocalUpdate = () => {} }) {
     const [genommen, setGenommen] = useState(data.genommen || false);

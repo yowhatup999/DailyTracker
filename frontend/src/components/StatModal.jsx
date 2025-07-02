@@ -1,11 +1,11 @@
 // src/components/StatModal.jsx
 import React from "react";
-import { useModal } from "../context/ModalContext";
-import AnimatedBorder from "./AnimatedBorder";
-import StatContentSteps from "./statContent/StatContentSteps";
-import StatContentWater from "./statContent/StatContentWater";
-import StatContentSupplement from "./statContent/StatContentSupplement";
-import StatContentCustom from "./statContent/StatContentCustom";
+import { useModal } from "../context/ModalContext.jsx";
+import AnimatedBorder from "./AnimatedBorder.jsx";
+import StatContentSteps from "./statContent/StatContentSteps.jsx";
+import StatContentWater from "./statContent/StatContentWater.jsx";
+import StatContentSupplement from "./statContent/StatContentSupplement.jsx";
+import StatContentCustom from "./statContent/StatContentCustom.jsx";
 
 export default function StatModal({ refreshDashboard, onLocalUpdate }) {
     const { modalData, closeModal } = useModal();

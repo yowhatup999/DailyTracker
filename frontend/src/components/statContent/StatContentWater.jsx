@@ -1,8 +1,8 @@
 // src/components/statContent/StatContentWater.jsx
 import React, { useState } from "react";
-import { patchDailyEntry } from "../../services/api";
-import AddButton from "../ui/AddButton";
-import InputField from "../ui/InputField";
+import { patchDailyEntry } from "../../services/api.js";
+import AddButton from "../ui/AddButton.jsx";
+import InputField from "../ui/InputField.jsx";
 
 export default function StatContentWater({ data, refresh, onLocalUpdate = () => {}, isDemo }) {
     const [localWater, setLocalWater] = useState(data.value || 0);

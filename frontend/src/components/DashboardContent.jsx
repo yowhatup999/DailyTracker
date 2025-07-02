@@ -1,7 +1,7 @@
 // src/components/DashboardContent.jsx
 import React from "react";
-import StatCard from "./StatCard";
-import buildDashboardCards from "./DashboardCards";
+import StatCard from "./StatCard.jsx";
+import buildDashboardCards from "./DashboardCards.js";
 
 export default function DashboardContent({ dashboard, overrides, onLocalUpdate }) {
     if (!dashboard)

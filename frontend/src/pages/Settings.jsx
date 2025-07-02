@@ -1,7 +1,7 @@
 // src/pages/Settings.jsx
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import AnimatedBorder from "../components/AnimatedBorder";
+import AnimatedBorder from "../components/AnimatedBorder.jsx";
 
 export default function Settings() {
     const { theme, setTheme } = useOutletContext() || {};

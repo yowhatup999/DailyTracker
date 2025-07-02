@@ -1,9 +1,9 @@
 // src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AnimatedBorder from "../components/AnimatedBorder";
-import { loginUser } from "../services/api";
-import { useUser } from "../hooks/UserContext"; // <- NEU!
+import AnimatedBorder from "../components/AnimatedBorder.jsx";
+import { loginUser } from "../services/api.js";
+import { useUser } from "../hooks/UserContext.jsx";
 
 export default function Login() {
     const [email, setEmail] = useState('');

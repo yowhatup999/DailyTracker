@@ -1,11 +1,11 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import AnimatedBorder from "../components/AnimatedBorder";
-import TopBar from "../components/TopBar";
-import DashboardWrapper from "./DashboardWrapper";
-import { getDashboardInfo } from "../services/api";
+import useAuth from "../hooks/useAuth.js";
+import AnimatedBorder from "../components/AnimatedBorder.jsx";
+import TopBar from "../components/TopBar.jsx";
+import DashboardWrapper from "./DashboardWrapper.jsx";
+import { getDashboardInfo } from "../services/api.js";
 
 const DEMO_DASHBOARD = {
     username: "Demo User",

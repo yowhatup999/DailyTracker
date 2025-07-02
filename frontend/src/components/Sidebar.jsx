@@ -2,8 +2,8 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Settings, LogOut, X } from "lucide-react";
-import { useUser } from "../hooks/UserContext";
-import AddButton from "./ui/AddButton";
+import { useUser } from "../hooks/UserContext.jsx";
+import AddButton from "./ui/AddButton.jsx";
 
 export default function Sidebar({ mobileOpen = false, setMobileOpen = () => {} }) {
     const navigate = useNavigate();

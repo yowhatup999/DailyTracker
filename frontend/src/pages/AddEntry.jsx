@@ -1,9 +1,9 @@
 // src/pages/AddEntry.jsx
 import React, { useState } from "react";
-import AnimatedBorder from "../components/AnimatedBorder";
-import AddSupplementForm from "../components/AddSupplementForm";
-import AddCustomEntryForm from "../components/AddCustomEntryForm";
-import AddDailyEntryForm from "../components/AddDailyEntryForm";
+import AnimatedBorder from "../components/AnimatedBorder.jsx";
+import AddSupplementForm from "../components/AddSupplementForm.jsx";
+import AddCustomEntryForm from "../components/AddCustomEntryForm.jsx";
+import AddDailyEntryForm from "../components/AddDailyEntryForm.jsx";
 
 export default function AddEntry() {
     const [entryType, setEntryType] = useState("supplement");

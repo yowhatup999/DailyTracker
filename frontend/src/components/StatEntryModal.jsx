@@ -1,7 +1,7 @@
 // src/components/StatEntryModal.jsx
 import React, { useState } from "react";
-import AnimatedBorder from "./AnimatedBorder";
-import { createCustomEntry, createSupplement } from "../services/api";
+import AnimatedBorder from "./AnimatedBorder.jsx";
+import { createCustomEntry, createSupplement } from "../services/api.js";
 
 export default function StatEntryModal({ onClose, onCreated }) {
     const [mode, setMode] = useState(null);

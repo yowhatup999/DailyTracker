@@ -1,8 +1,8 @@
 // src/pages/Signup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AnimatedBorder from "../components/AnimatedBorder";
-import { registerUser } from "../services/api";
+import AnimatedBorder from "../components/AnimatedBorder.jsx";
+import { registerUser } from "../services/api.js";
 
 export default function Signup() {
     const [email, setEmail] = useState('');

@@ -1,6 +1,6 @@
 // src/pages/Profile.jsx
 import React from "react";
-import AnimatedBorder from "../components/AnimatedBorder";
+import AnimatedBorder from "../components/AnimatedBorder.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {

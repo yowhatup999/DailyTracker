@@ -1,6 +1,6 @@
 // src/components/AddDailyEntryForm.jsx
 import React, { useState } from "react";
-import { createDailyEntry } from "../services/api";
+import { createDailyEntry } from "../services/api.js";
 
 export default function AddDailyEntryForm() {
     const [form, setForm] = useState({});

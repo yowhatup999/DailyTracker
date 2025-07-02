@@ -1,6 +1,6 @@
 // src/components/StatEntryShortcutCard.jsx
 import React from "react";
-import { useModal } from "../context/ModalContext";
+import { useModal } from "../context/ModalContext.jsx";
 import { Plus } from "lucide-react";
 
 export default function StatEntryShortcutCard({ hasEntries }) {

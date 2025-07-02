@@ -1,6 +1,6 @@
 // src/context/DashboardContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getTodayDailyEntry } from "../services/api";
+import { getTodayDailyEntry } from "../services/api.js";
 
 const DashboardContext = createContext();
 

@@ -1,8 +1,8 @@
 // src/components/statContent/StatContentSteps.jsx
 import React, { useState } from "react";
-import { patchDailyEntry } from "../../services/api";
-import AddButton from "../ui/AddButton";
-import InputField from "../ui/InputField";
+import { patchDailyEntry } from "../../services/api.js";
+import AddButton from "../ui/AddButton.jsx";
+import InputField from "../ui/InputField.jsx";
 
 export default function StatContentSteps({ data, refresh, onLocalUpdate = () => {}, isDemo }) {
     const [localSteps, setLocalSteps] = useState(data.value || 0);

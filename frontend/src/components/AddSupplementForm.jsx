@@ -1,6 +1,6 @@
 // src/components/AddSupplementForm.jsx
 import React, { useState } from "react";
-import { createSupplementDefinition } from "../services/api";
+import { createSupplementDefinition } from "../services/api.js";
 
 export default function AddSupplementForm() {
     const [form, setForm] = useState({});

@@ -1,9 +1,9 @@
 // src/layouts/AppLayout.jsx
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Footer from "../components/Footer";
-import Sidebar from "../components/Sidebar";
-import AccountDropdown from "../components/AccountDropdown";
+import Footer from "../components/Footer.jsx";
+import Sidebar from "../components/Sidebar.jsx";
+import AccountDropdown from "../components/AccountDropdown.jsx";
 
 export default function AppLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(false);

@@ -1,6 +1,6 @@
 // src/layouts/AuthLayout.jsx
 import React from "react";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer.jsx";
 
 export default function AuthLayout({ children }) {
     return (

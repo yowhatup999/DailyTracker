@@ -1,6 +1,6 @@
 // src/components/AddCustomEntryForm.jsx
 import React, { useState } from "react";
-import { createCustomDefinition } from "../services/api";
+import { createCustomDefinition } from "../services/api.js";
 
 export default function AddCustomEntryForm() {
     const [form, setForm] = useState({});

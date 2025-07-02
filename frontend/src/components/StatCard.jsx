@@ -1,6 +1,6 @@
 // src/components/StatCard.jsx
 import React from "react";
-import { useModal } from "../context/ModalContext";
+import { useModal } from "../context/ModalContext.jsx";
 
 export default function StatCard({
                                      title,
