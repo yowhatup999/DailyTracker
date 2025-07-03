@@ -1,5 +1,5 @@
 # --- Build Stage ---
-FROM node:20 AS build
+FROM node:20-slim AS build
 WORKDIR /app
 
 COPY package.json ./
