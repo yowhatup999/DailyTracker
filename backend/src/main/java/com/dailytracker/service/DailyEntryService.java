@@ -165,7 +165,6 @@ public class DailyEntryService {
             }
         }
 
-        // Neuer Tages-Eintrag wird jetzt erzeugt!
         DailyEntry newEntry = new DailyEntry();
         newEntry.setDatum(today);
         newEntry.setUser(user);

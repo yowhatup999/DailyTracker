@@ -70,7 +70,6 @@ public class AstroApiService {
                 return null;
             }
 
-            // Deutsch-Übersetzung optional:
             String translated = translateMoonPhaseToGerman(name);
             return new MoonData(translated, emoji);
         } catch (Exception e) {
