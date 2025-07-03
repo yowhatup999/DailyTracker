@@ -11,3 +11,5 @@ target/
 
 # Word-Dokumente
 *.docx
+
+package-lock.json
