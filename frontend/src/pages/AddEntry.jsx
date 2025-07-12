@@ -9,13 +9,13 @@ export default function AddEntry() {
     const [entryType, setEntryType] = useState("supplement");
 
     return (
-        <div className="flex min-h-[80vh] items-center justify-center">
-            <div className="w-full max-w-md">
-                <AnimatedBorder>
+        <div className="flex min-h-[80vh] items-start justify-center">
+            <div className="mt-28">
+                <AnimatedBorder className="max-w-md mx-auto">
                     <div className="glow-inner p-8 space-y-8 text-center">
-                        <h1 className="text-3xl font-bold tracking-tight mb-2">
+                        <h2 className="text-3xl font-semibold text-center text-zinc-900 dark:text-white">
                             Neuen Eintrag hinzufügen
-                        </h1>
+                        </h2>
                         <select
                             value={entryType}
                             onChange={e => setEntryType(e.target.value)}
