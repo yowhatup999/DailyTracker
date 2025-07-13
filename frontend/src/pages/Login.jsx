@@ -63,7 +63,7 @@ export default function Login() {
                                     Einloggen
                                 </button>
                                 {message && (
-                                    <div className={`mt-3 text-sm font-medium ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                                    <div className={`mt-3 text-sm font-medium w-full text-center ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
                                         {message.text}
                                     </div>
                                 )}

@@ -68,7 +68,7 @@ export default function AddSupplementForm() {
                 {loading ? "Speichert..." : "Speichern"}
             </button>
             {message && (
-                <div className={`mt-4 text-sm font-medium ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                <div className={`mt-4 text-sm font-medium w-full text-center ${message.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
                     {message.text}
                 </div>
             )}
