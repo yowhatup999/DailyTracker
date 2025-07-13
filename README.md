@@ -1,6 +1,6 @@
 # DailyTracker
 
-![App Icon](docs/icon.png)
+![App Icon](frontend/public/App.png)
 
 Ein persönliches Health- und Lifestyle-Tracking-Tool.
 
