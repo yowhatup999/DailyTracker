@@ -14,9 +14,13 @@ Ein persönliches Health- und Lifestyle-Tracking-Tool.
 
 Weitere Screenshots:
 
-| Login                               | Registrierung                        | Supplement-Verwaltung                |
-|-------------------------------------|--------------------------------------|--------------------------------------|
-| ![Login](docs/screenshots/login.png) | ![Registrierung](docs/screenshots/register.png) | ![Supplements](docs/screenshots/supplements.png) |
+| Login                               | Registrierung                        |
+|-------------------------------------|--------------------------------------|
+| ![Login](docs/screenshots/login.png) | ![Registrierung](docs/screenshots/register.png) |
+
+| Supplement-Verwaltung               | Settings                             |
+|-------------------------------------|--------------------------------------|
+| ![Supplements](docs/screenshots/supplements.png) | ![Settings](docs/screenshots/settings.png) |
 
 ---
 
