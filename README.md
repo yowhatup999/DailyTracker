@@ -1,6 +1,6 @@
 # DailyTracker
 
-![App Icon](frontend/public/App.png)
+<img src="frontend/public/App.png" alt="App Icon" width="80" style="border-radius: 16px;" />
 
 Ein persönliches Health- und Lifestyle-Tracking-Tool.
 
