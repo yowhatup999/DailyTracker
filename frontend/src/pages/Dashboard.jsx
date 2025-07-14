@@ -40,7 +40,23 @@ export default function Dashboard() {
         }));
     }, []);
 
-    if (!isReady || !dashboard) return null;
+    if (!isReady || !dashboard) {
+        return (
+            <div className="mt-28 flex items-center justify-center" style={{ minHeight: 320 }}>
+            <span style={{
+                color: "#adb5bd",
+                fontSize: 18,
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+                fontFamily: "SF Pro Display, Inter, sans-serif",
+                opacity: 0.8,
+                userSelect: "none"
+            }}>
+                Loading Dashboard...
+            </span>
+            </div>
+        );
+    }
 
     const DemoBanner = (
         <div className="w-full flex items-center justify-center">
