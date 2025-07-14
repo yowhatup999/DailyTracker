@@ -40,9 +40,9 @@ function moonPhaseToTextAndEmoji(phaseValue) {
 }
 
 export async function fetchWeatherAndMoon() {
-    // 🛠 Fester Standort: Darmstadt
-    const latitude = 49.8728;
-    const longitude = 8.6512;
+    // Fester Standort: Frankfurt
+    const latitude = 50.1109;
+    const longitude = 8.6821;
     const today = new Date().toISOString().split("T")[0];
 
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&daily=moon_phase&timezone=auto&start_date=${today}&end_date=${today}`;
