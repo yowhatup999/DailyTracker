@@ -5,16 +5,10 @@ import StatModal from "../components/StatModal.jsx";
 
 export default function DashboardWrapper({ dashboard, overrides, onLocalUpdate, refresh }) {
     return (
-        <>
-            <DashboardContent
-                dashboard={dashboard}
-                overrides={overrides}
-                onLocalUpdate={onLocalUpdate}
-            />
-            <StatModal
-                refreshDashboard={refresh}
-                onLocalUpdate={onLocalUpdate}
-            />
-        </>
+        <DashboardContent
+            dashboard={dashboard}
+            overrides={overrides}
+            onLocalUpdate={onLocalUpdate}
+        />
     );
 }

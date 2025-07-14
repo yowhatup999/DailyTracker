@@ -6,12 +6,16 @@ import router from "./router.jsx";
 import "./styles/index.css";
 import { ModalProvider } from "./context/ModalContext.jsx";
 import { UserProvider } from "./hooks/UserContext.jsx";
+import StatModal from "./components/StatModal.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <UserProvider>
             <ModalProvider>
-                <RouterProvider router={router} />
+                <>
+                    <RouterProvider router={router} />
+                    <StatModal />
+                </>
             </ModalProvider>
         </UserProvider>
     </React.StrictMode>

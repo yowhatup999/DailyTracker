@@ -41,7 +41,7 @@ export default function StatModal({ refreshDashboard, onLocalUpdate }) {
     return (
         <div
             id="modal-backdrop"
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-[2px] dark:bg-black/30"
             onClick={(e) => e.target.id === "modal-backdrop" && closeModal()}
         >
             <div className="w-full max-w-md p-4">
