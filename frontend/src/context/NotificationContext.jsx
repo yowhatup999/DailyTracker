@@ -11,8 +11,8 @@ export function NotificationProvider({ children }) {
     const [notification, setNotification] = useState(null);
     const [visible, setVisible] = useState(false);
 
-    // 3200ms = 3,2 Sekunden
-    const showNotification = useCallback((message, duration = 3200) => {
+    // 4000ms = 4 Sekunden
+    const showNotification = useCallback((message, duration = 4000) => {
         setNotification(message);
         setVisible(true);
         setTimeout(() => setVisible(false), duration);
@@ -40,13 +40,11 @@ export function NotificationProvider({ children }) {
                         boxShadow: "0 8px 40px 0 rgba(0,0,0,0.12)",
                         letterSpacing: ".01em",
                         fontWeight: 500,
-                        // Optik noch mehr "glass" wie macOS Notification
                         background: "rgba(255,255,255,0.68)",
                         color: "#1a1a1a",
                         backdropFilter: "blur(10px) saturate(1.12)",
                         WebkitBackdropFilter: "blur(10px) saturate(1.12)",
                         border: "1.5px solid rgba(255,255,255,0.26)",
-                        // Responsive: Break line only at container max width
                         wordBreak: "break-word",
                         textAlign: "center"
                     }}
