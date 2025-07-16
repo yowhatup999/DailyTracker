@@ -67,12 +67,9 @@ export default function buildDashboardCards(entry, overrides) {
         });
     });
 
-    // Add-Card
     cards.push({
         isAddCard: true,
-        isEmpty:
-            (entry.supplements?.length ?? 0) + (entry.customEntries?.length ?? 0) === 0,
-        onClickData: { type: "create-entry" },
+        onClickData: { type: "create-entry" }
     });
 
     return cards;

@@ -1,11 +1,15 @@
 // src/components/AddSupplementForm.jsx
 import React, { useState } from "react";
 import { createSupplementDefinition } from "../services/api.js";
+import {useNotification} from "../context/NotificationContext.jsx";
+import useAuth from "../hooks/useAuth.js";
 
 export default function AddSupplementForm() {
     const [form, setForm] = useState({});
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { showNotification } = useNotification();
+    const { isLoggedIn } = useAuth();
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
@@ -29,6 +33,11 @@ export default function AddSupplementForm() {
             setForm({});
         } catch (err) {
             setMessage({ text: "Fehler beim Anlegen.", type: "error" });
+            if (!isLoggedIn) {
+                showNotification("🔒 Demo-Modus – Bitte einloggen, um zu speichern & alle Funktionen zu nutzen.");
+            } else {
+                showNotification("Server nicht erreichbar oder unbekannter Fehler.");
+            }
         }
         setLoading(false);
     };

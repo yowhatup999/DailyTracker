@@ -6,6 +6,7 @@ import StatContentSteps from "./statContent/StatContentSteps.jsx";
 import StatContentWater from "./statContent/StatContentWater.jsx";
 import StatContentSupplement from "./statContent/StatContentSupplement.jsx";
 import StatContentCustom from "./statContent/StatContentCustom.jsx";
+import AddEntryModalContent from "./AddEntryModalContent.jsx";
 
 export default function StatModal({ refreshDashboard, onLocalUpdate }) {
     const { modalData, closeModal } = useModal();
@@ -33,6 +34,8 @@ export default function StatModal({ refreshDashboard, onLocalUpdate }) {
                 return <StatContentSupplement {...commonProps} />;
             case "custom":
                 return <StatContentCustom {...commonProps} />;
+            case "create-entry":
+                return <AddEntryModalContent onClose={closeModal} />;
             default:
                 return <p>Unbekannter Typ</p>;
         }

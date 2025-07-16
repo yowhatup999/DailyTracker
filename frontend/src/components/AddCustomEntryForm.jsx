@@ -1,11 +1,15 @@
 // src/components/AddCustomEntryForm.jsx
 import React, { useState } from "react";
 import { createCustomDefinition } from "../services/api.js";
+import {useNotification} from "../context/NotificationContext.jsx";
+import useAuth from "../hooks/useAuth.js";
 
 export default function AddCustomEntryForm() {
     const [form, setForm] = useState({});
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { showNotification } = useNotification();
+    const { isLoggedIn } = useAuth();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,6 +33,11 @@ export default function AddCustomEntryForm() {
             setForm({});
         } catch (err) {
             setMessage({ text: "Fehler beim Anlegen.", type: "error" });
+            if (!isLoggedIn) {
+                showNotification("🔒 Demo-Modus – Bitte einloggen, um zu speichern & alle Funktionen zu nutzen.");
+            } else {
+                showNotification("Server nicht erreichbar oder unbekannter Fehler.");
+            }
         }
         setLoading(false);
     };

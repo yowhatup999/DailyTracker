@@ -6,6 +6,7 @@ import AnimatedBorder from "../components/AnimatedBorder.jsx";
 import TopBar from "../components/TopBar.jsx";
 import DashboardWrapper from "./DashboardWrapper.jsx";
 import { getDashboardInfo } from "../services/api.js";
+import { useNotification } from "../context/NotificationContext.jsx";
 
 const DEMO_DASHBOARD = {
     username: "Demo User",
@@ -18,6 +19,7 @@ export default function Dashboard() {
     const [dashboard, setDashboard] = useState(null);
     const [overrides, setOverrides] = useState({});
     const [isDemo, setIsDemo] = useState(false);
+    const { showNotification } = useNotification();
 
     useEffect(() => {
         if (!isReady) return;
@@ -108,5 +110,6 @@ export default function Dashboard() {
                 </div>
             </AnimatedBorder>
         </div>
-    );
+    )
+
 }

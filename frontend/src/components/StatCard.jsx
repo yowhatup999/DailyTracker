@@ -1,6 +1,8 @@
 // src/components/StatCard.jsx
 import React from "react";
 import { useModal } from "../context/ModalContext.jsx";
+import useAuth from "../hooks/useAuth.js";
+import { useNotification } from "../context/NotificationContext.jsx";
 
 export default function StatCard({
                                      title,
@@ -12,10 +14,19 @@ export default function StatCard({
                                      onLocalUpdate
                                  }) {
     const { openModal } = useModal();
+    const { isLoggedIn } = useAuth();
+    const { showNotification } = useNotification();
     const isAddCard = onClickData?.type === "create-entry";
 
     const handleClick = () => {
-        if (isAddCard && onCardClick) return onCardClick(onClickData);
+        if (isAddCard) {
+            if (!isLoggedIn) {
+                showNotification("🔒 Demo-Modus – Bitte einloggen, um zu speichern & alle Funktionen zu nutzen.");
+                return;
+            }
+            openModal({ ...onClickData, onLocalUpdate });
+            return;
+        }
         if (onClickData) openModal({ ...onClickData, onLocalUpdate });
     };
 
