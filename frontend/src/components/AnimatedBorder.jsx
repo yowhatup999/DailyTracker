@@ -1,6 +1,5 @@
 // src/components/AnimatedBorder.jsx
 import React from "react";
-import "../styles/output.css";
 
 export default function AnimatedBorder({ children }) {
     return (
