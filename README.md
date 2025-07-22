@@ -20,6 +20,19 @@ Weitere Screenshots:
 
 ---
 
+## 🎬 Live-Demo
+
+Die App direkt testen, ohne Setup?
+
+👉 **Hier geht’s zur öffentlichen DEMO-Seite:**  
+[https://yowhatup999.github.io/dailytracker-demo/](https://yowhatup999.github.io/dailytracker-demo/)
+
+- **Frontend-Only** – keine Anmeldung/Datenspeicherung  
+- Einfach mal das Dashboard und UI anschauen
+
+---
+
+
 ## Ziel
 
 Mit DailyTracker kannst du deine wichtigsten Gesundheitsdaten einfach erfassen und auswerten:
