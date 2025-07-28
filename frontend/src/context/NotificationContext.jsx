@@ -10,7 +10,7 @@ export function useNotification() {
 
 export function NotificationProvider({ children }) {
     const [notification, setNotification] = useState(null);
-    const [messageKey, setMessageKey] = useState(0); // <-- neuer Key
+    const [messageKey, setMessageKey] = useState(0);
 
     const showNotification = useCallback((message) => {
         setMessageKey(Date.now());

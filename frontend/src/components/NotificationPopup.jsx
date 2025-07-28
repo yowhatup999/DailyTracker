@@ -52,7 +52,7 @@ export default function NotificationPopup({ message }) {
                         WebkitBackdropFilter: "blur(24px) saturate(180%)",
                         border: "1px solid rgba(200, 200, 200, 0.4)",
                         color: "rgba(0, 0, 0, 0.8)",
-                        fontSize: "1rem",
+                        fontSize: "1.1rem",
                         fontWeight: 500,
                         letterSpacing: "0.01em",
                         maxWidth: 480,

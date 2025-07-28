@@ -21,7 +21,7 @@ export default function StatCard({
     const handleClick = () => {
         if (isAddCard) {
             if (!isLoggedIn) {
-                showNotification("🔒 Demo-Modus – Bitte einloggen, um zu speichern & alle Funktionen zu nutzen.");
+                showNotification("🔒 Demo-Modus – Bitte einloggen! 🔒");
                 return;
             }
             openModal({ ...onClickData, onLocalUpdate });
